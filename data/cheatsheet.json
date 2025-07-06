@@ -1,0 +1,1373 @@
+[
+  {
+    "id": "beginner-editor-001",
+    "category": "はじめてのGAS",
+    "tab": "エディタ操作",
+    "title": "スプレッドシートからエディタを開く",
+    "description": "Googleスプレッドシートのメニューからスクリプトエディタを開く基本的な方法です。コンテナバインドスクリプトと呼ばれます。",
+    "code": "// 1. Googleスプレッドシートを開きます。\n// 2. 上部メニューの「拡張機能」をクリックします。\n// 3. 「Apps Script」を選択します。\n// これで、そのスプレッドシートに紐付いたスクリプトエディタが開きます。",
+    "result": "スクリプトエディタが新しいタブまたはウィンドウで表示されます。",
+    "tags": ["コンテナバインド", "スクリプトエディタ", "始め方", "環境構築"],
+    "level": "basic"
+  },
+  {
+    "id": "beginner-syntax-001",
+    "category": "はじめてのGAS",
+    "tab": "構文",
+    "title": "関数の定義と変数の宣言",
+    "description": "GASの基本となる関数の書き方と、値を保持するための変数の宣言方法です。JavaScriptと同じ構文を使用します。",
+    "code": "function myFunction() {\n  // 定数（再代入不可）の宣言\n  const message = 'Hello, World!';\n\n  // 変数（再代入可能）の宣言\n  let count = 10;\n\n  console.log(message);\n  console.log(count);\n}",
+    "result": "実行ログに 'Hello, World!' と 10 が表示されます。",
+    "tags": ["const", "let", "変数宣言", "文法", "関数定義"],
+    "level": "basic"
+  },
+  {
+    "id": "beginner-log-001",
+    "category": "はじめてのGAS",
+    "tab": "ログ出力",
+    "title": "Loggerを使ってログを確認する",
+    "description": "スクリプトの途中経過や変数の値を確認するための最も基本的なデバッグ方法です。",
+    "code": "function checkLog() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet();\n  const sheetName = sheet.getName();\n\n  // ログに出力したい変数を指定\n  Logger.log(sheetName);\n}",
+    "result": "実行後、スクリプトエディタ下部の「実行ログ」に現在開いているスプレッドシート名が表示されます。",
+    "tags": ["スプレッドシート操作", "ログ出力"],
+    "level": "basic"
+  },
+  {
+    "id": "beginner-error-001",
+    "category": "はじめてのGAS",
+    "tab": "エラー処理",
+    "title": "try-catchによるエラー処理",
+    "description": "エラーが発生する可能性のある処理をtryブロックで囲み、エラー発生時の処理をcatchブロックに記述します。これにより、エラーでスクリプト全体が停止するのを防ぎます。",
+    "code": "function errorHandlingExample() {\n  try {\n    // 存在しないシートを取得しようとしてエラーを発生させる\n    const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('存在しないシート');\n    sheet.getRange('A1').setValue('Success');\n  } catch (e) {\n    // エラー内容をログに出力\n    Logger.log('エラーが発生しました: ' + e.message);\n    // ここで管理者にメール通知するなどの処理も可能\n  }\n}",
+    "result": "スクリプトは停止せず、実行ログに 'エラーが発生しました: Cannot read properties of null (reading 'getRange').' のようなメッセージが表示されます。",
+    "tags": [
+      "try-catch",
+      "エラー処理",
+      "スプレッドシート操作",
+      "ログ出力",
+      "例外処理",
+      "安定化"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "spreadsheet-sheet-001",
+    "category": "スプレッドシート操作",
+    "tab": "シート操作",
+    "title": "アクティブなシートを取得する",
+    "description": "現在表示されている（アクティブな）シートを取得します。最も一般的に使われるシート取得方法です。",
+
+    "code": "function getActiveSheet() {\n  const ss = SpreadsheetApp.getActiveSpreadsheet();\n  const sheet = ss.getActiveSheet();\n  Logger.log('アクティブなシート名: ' + sheet.getName());\n}",
+    "result": "実行ログに、現在開いているシートの名前が表示されます。",
+    "tags": [
+      "Sheet",
+      "getActiveSheet",
+      "シート",
+      "スプレッドシート操作",
+      "取得"
+    ],
+    "level": "basic"
+  },
+  {
+    "id": "spreadsheet-cell-001",
+    "category": "スプレッドシート操作",
+    "tab": "セル操作",
+    "title": "単一セルの値を取得する (getValue)",
+    "description": "指定した一つのセルの値を取得します。A1形式でセルを指定します。",
+    "code": "function getSingleCellValue() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  // A1セルの値を取得\n  const value = sheet.getRange('A1').getValue();\n  Logger.log(value);\n}",
+    "result": "実行ログに、A1セルに入力されている値が表示されます。",
+    "tags": [
+      "スプレッドシート操作",
+      "セル",
+      "セル操作",
+      "セル読み取り",
+      "取得",
+      "読み取り"
+    ],
+    "level": "basic"
+  },
+  {
+    "id": "spreadsheet-cell-002",
+    "category": "スプレッドシート操作",
+    "tab": "セル操作",
+    "title": "複数範囲の値を二次元配列で取得する (getValues)",
+    "description": "指定した範囲の値をまとめて取得します。データは行と列に対応した二次元配列として返されます。",
+    "code": "function getMultipleCellValues() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  // A1からB3の範囲の値を取得\n  const values = sheet.getRange('A1:B3').getValues();\n  Logger.log(values);\n}",
+    "result": "実行ログに [[A1の値, B1の値], [A2の値, B2の値], [A3の値, B3の値]] という形式の二次元配列が表示されます。",
+    "tags": [
+      "スプレッドシート操作",
+      "セル操作",
+      "二次元配列",
+      "取得",
+      "範囲",
+      "範囲読み取り"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "spreadsheet-last-row-001",
+    "category": "スプレッドシート操作",
+    "tab": "最終行・最終列の取得",
+    "title": "データが入力されている最終行を取得する",
+    "description": "シート内でデータが入力されている最後の行番号を取得します。データの追記先を探す際に頻繁に利用されます。",
+    "code": "function findLastRow() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  const lastRow = sheet.getLastRow();\n  Logger.log('最終行は ' + lastRow + ' 行目です。');\n}",
+    "result": "実行ログに、データが存在する最後の行番号が表示されます。",
+    "tags": [
+      "Sheet",
+      "getLastRow",
+      "スプレッドシート操作",
+      "データ操作",
+      "取得",
+      "最終行"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "spreadsheet-row-001",
+    "category": "スプレッドシート操作",
+    "tab": "行の追加",
+    "title": "最終行にデータを1行追加する (appendRow)",
+    "description": "シートの最終行の下に新しい行を挿入し、データを追加します。引数には配列を渡します。",
+    "code": "function addNewRow() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  // 配列で1行分のデータを指定\n  sheet.appendRow(['ID-003', '大石', '営業部']);\n}",
+    "result": "シートのデータが入っている最終行の下に、新しいデータが1行追加されます。",
+    "tags": [
+      "Sheet",
+      "appendRow",
+      "スプレッドシート操作",
+      "書き込み",
+      "行",
+      "追加"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "workspace-gmail-001",
+    "category": "Workspaceサービス連携",
+    "tab": "Gmail",
+    "title": "Gmailでメールを送信する",
+    "description": "指定した宛先、件名、本文でメールを送信します。最初の実行時にはGmailへのアクセス許可が求められます。",
+    "code": "function sendSimpleEmail() {\n  const recipient = 'user@example.com';\n  const subject = 'GASからのテストメール';\n  const body = 'これはGoogle Apps Scriptから送信されたメールです。';\n  GmailApp.sendEmail(recipient, subject, body);\n}",
+    "result": "指定したメールアドレス（recipient）にメールが送信されます。",
+    "tags": ["GmailApp", "メール", "メール送信", "自動送信", "送信"],
+    "level": "basic"
+  },
+  {
+    "id": "workspace-calendar-001",
+    "category": "Workspaceサービス連携",
+    "tab": "Googleカレンダー",
+    "title": "Googleカレンダーに予定を作成する",
+    "description": "指定したタイトルと時間で、デフォルトカレンダーに新しい予定を作成します。",
+    "code": "function createCalendarEvent() {\n  const calendar = CalendarApp.getDefaultCalendar();\n  const title = 'GASミーティング';\n  const startTime = new Date('2025/07/01 10:00:00');\n  const endTime = new Date('2025/07/01 11:00:00');\n  \n  calendar.createEvent(title, startTime, endTime);\n}",
+    "result": "自身のGoogleカレンダーに「GASミーティング」という名前の予定が作成されます。",
+    "tags": [
+      "CalendarApp",
+      "Googleカレンダー",
+      "createEvent",
+      "イベント",
+      "作成",
+      "自動化"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "workspace-drive-001",
+    "category": "Workspaceサービス連携",
+    "tab": "Googleドライブ",
+    "title": "Googleドライブにテキストファイルを作成する",
+    "description": "指定したファイル名と内容で、Googleドライブのルートフォルダに新しいテキストファイルを作成します。",
+    "code": "function createTextFile() {\n  const fileName = 'gas_test.txt';\n  const content = 'Google Apps Scriptによって作成されました。';\n  DriveApp.createFile(fileName, content);\n}",
+    "result": "Googleドライブ直下に `gas_test.txt` というファイルが作成されます。",
+    "tags": [
+      "Googleドライブ",
+      "createFile",
+      "ドライブ",
+      "ファイル",
+      "作成",
+      "自動生成"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "automation-trigger-001",
+    "category": "自動化とトリガー",
+    "tab": "トリガー",
+    "title": "毎日決まった時間に実行するトリガーを設定",
+    "description": "プログラムで時間主導型のトリガーを作成します。この関数を一度実行すると、指定した関数（ここでは`dailyTask`）が毎日午前9時台に自動実行されるようになります。",
+    "code": "function setDailyTrigger() {\n  // 既に設定済みのトリガーを削除して重複を防ぐ\n  ScriptApp.getProjectTriggers().forEach(trigger => {\n    if (trigger.getHandlerFunction() === 'dailyTask') {\n      ScriptApp.deleteTrigger(trigger);\n    }\n  });\n\n  // 毎日午前9時〜10時の間に実行するトリガーを設定\n  ScriptApp.newTrigger('dailyTask')\n    .timeBased()\n    .everyDays(1)\n    .atHour(9)\n    .create();\n}\n\nfunction dailyTask() {\n  // ここに毎日実行したい処理を記述\n  console.log('日次タスクを実行しました。');\n}",
+    "result": "`setDailyTrigger`を実行するとトリガーが設定されます。その後、毎日午前9時台に`dailyTask`が自動実行されます。",
+    "tags": ["ScriptApp", "トリガー", "予約", "定時実行", "時間主導", "自動化"],
+    "level": "advance"
+  },
+  {
+    "id": "automation-trigger-002",
+    "category": "自動化とトリガー",
+    "tab": "トリガー",
+    "title": "フォーム送信時に処理を実行する",
+    "description": "Googleフォームが送信されたことをきっかけに、指定した関数（`onFormSubmit`）を実行するトリガーを設定します。",
+    "code": "// この関数は手動でトリガー設定画面から設定する必要があります。\n// 1. スクリプトエディタの「トリガー」アイコンをクリック\n// 2. 「トリガーを追加」ボタンを押す\n// 3. 実行する関数を選択: onFormSubmit\n// 4. イベントのソースを選択: フォームから\n// 5. イベントの種類を選択: フォーム送信時\n// 6. 保存\n\nfunction onFormSubmit(e) {\n  // 回答内容を取得\n  const itemResponses = e.response.getItemResponses();\n  let responseText = '';\n  itemResponses.forEach(itemResponse => {\n    responseText += itemResponse.getItem().getTitle() + ': ' + itemResponse.getResponse() + '\\n';\n  });\n  Logger.log(responseText);\n}",
+    "result": "連携しているGoogleフォームが送信されるたびに、その回答内容が実行ログに出力されます。",
+    "tags": ["FormApp", "Googleフォーム", "イベント駆動", "トリガー", "自動化"],
+    "level": "application"
+  },
+  {
+    "id": "ui-menu-001",
+    "category": "UIとHTML",
+    "tab": "カスタムメニューの作成",
+    "title": "スプレッドシートにカスタムメニューを追加する",
+    "description": "スプレッドシートを開いた時に、メニューバーに独自のメニューを追加します。`onOpen`という特別な関数名を使用します。",
+    "code": "function onOpen() {\n  SpreadsheetApp.getUi()\n    .createMenu('カスタムメニュー')\n    .addItem('機能を実行', 'myFunction')\n    .addToUi();\n}\n\nfunction myFunction() {\n  SpreadsheetApp.getUi().alert('機能が実行されました！');\n}",
+    "result": "スプレッドシートを開き直す（リロードする）と、メニューバーに「カスタムメニュー」が表示され、クリックすると「機能を実行」が選択できます。",
+    "tags": [
+      "カスタムメニュー",
+      "スプレッドシート操作",
+      "トリガー",
+      "画面操作"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "ui-html-001",
+    "category": "UIとHTML",
+    "tab": "HTML表示",
+    "title": "HTMLを使ってカスタムサイドバーを表示する",
+    "description": "別途作成したHTMLファイル（`sidebar.html`）を読み込み、スプレッドシートの右側にサイドバーとして表示します。",
+    "code": "// --- Code.gs ---\nfunction showCustomSidebar() {\n  const html = HtmlService.createHtmlOutputFromFile('sidebar')\n      .setTitle('カスタムサイドバー');\n  SpreadsheetApp.getUi().showSidebar(html);\n}\n\n// --- sidebar.html ---\n// <!DOCTYPE html>\n// <html>\n//   <head>\n//     <base target=\"_top\">\n//   </head>\n//   <body>\n//     <p>こんにちは、サイドバーです。</p>\n//     <input type=\"button\" value=\"閉じる\" onclick=\"google.script.host.close()\" />\n//   </body>\n// </html>",
+    "result": "`showCustomSidebar`関数を実行すると、スプレッドシートの右側に「カスタムサイドバー」というタイトルのパネルが表示されます。",
+    "tags": [
+      "HTML",
+      "HTML表示",
+      "showSidebar",
+      "サイドバー",
+      "スプレッドシート操作",
+      "画面作成",
+      "画面操作"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "external-api-001",
+    "category": "外部連携と設定管理",
+    "tab": "外部API",
+    "title": "外部APIを叩いてJSONデータを取得する",
+    "description": "UrlFetchAppを使って外部のAPIにGETリクエストを送信し、返ってきたJSON形式のレスポンスをオブジェクトとして扱います。",
+    "code": "function fetchJsonApi() {\n  // 例として郵便番号検索APIを使用\n  const url = 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=1000001';\n  \n  try {\n    const response = UrlFetchApp.fetch(url);\n    const json = response.getContentText();\n    const data = JSON.parse(json);\n    \n    // 取得したデータから住所を取り出す\n    const address = data.results[0].address1 + data.results[0].address2 + data.results[0].address3;\n    Logger.log(address);\n\n  } catch (e) {\n    Logger.log('APIの取得に失敗しました: ' + e.message);\n  }\n}",
+    "result": "実行ログに '東京都千代田区千代田' という住所が表示されます。",
+    "tags": ["API", "GET", "HTTPリクエスト", "JSON", "UrlFetchApp", "外部連携"],
+    "level": "application"
+  },
+  {
+    "id": "external-property-001",
+    "category": "外部連携と設定管理",
+    "tab": "プロパティ保存",
+    "title": "APIキーなどの機密情報をスクリプトプロパティに保存する",
+    "description": "コード内に直接書きたくないAPIキーや設定値などを、安全な場所に保存・取得する方法です。",
+    "code": "function saveApiKey() {\n  const properties = PropertiesService.getScriptProperties();\n  properties.setProperty('API_KEY', 'ここに実際のAPIキーを入力');\n  Logger.log('APIキーを保存しました。');\n}\n\nfunction getApiKey() {\n  const properties = PropertiesService.getScriptProperties();\n  const apiKey = properties.getProperty('API_KEY');\n  Logger.log('取得したAPIキー: ' + apiKey);\n}",
+    "result": "`saveApiKey`実行後、`getApiKey`を実行すると、保存したAPIキーがログに表示されます。スクリプトプロパティは同じスクリプトプロジェクト内でのみアクセス可能です。",
+    "tags": [
+      "APIキー",
+      "PropertiesService",
+      "データ保存",
+      "プロパティ",
+      "機密情報",
+      "永続化"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "spreadsheet-sheet-002",
+    "category": "スプレッドシート操作",
+    "tab": "シート操作",
+    "title": "IDを指定してスプレッドシートを開く",
+    "description": "現在アクティブではない別のスプレッドシートを、そのIDを使って直接開きます。URLからIDを取得できます。",
+    "code": "function openSpreadsheetById() {\n  // URLが https://docs.google.com/spreadsheets/d/ここにID/edit の場合\n  const SPREADSHEET_ID = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxx'; // 対象スプレッドシートのIDに置き換える\n  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);\n  Logger.log('開いたスプレッドシート名: ' + ss.getName());\n}",
+    "result": "指定したIDのスプレッドシートがバックグラウンドで開かれ、その名前がログに出力されます。",
+    "tags": [
+      "openById",
+      "スプレッドシート",
+      "スプレッドシート操作",
+      "別ファイル",
+      "取得"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "spreadsheet-cell-003",
+    "category": "スプレッドシート操作",
+    "tab": "セル操作",
+    "title": "単一セルに値を設定する (setValue)",
+    "description": "指定した一つのセルに値を書き込みます。既存の値は上書きされます。",
+    "code": "function setSingleCellValue() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  // A1セルに値を設定\n  sheet.getRange('A1').setValue('Hello, GAS!');\n}",
+    "result": "アクティブシートのA1セルに 'Hello, GAS!' という文字列が入力されます。",
+    "tags": [
+      "スプレッドシート操作",
+      "セル",
+      "セル操作",
+      "セル書き込み",
+      "書き込み",
+      "設定"
+    ],
+    "level": "basic"
+  },
+  {
+    "id": "spreadsheet-cell-004",
+    "category": "スプレッドシート操作",
+    "tab": "セル操作",
+    "title": "複数範囲に値を一括で設定する (setValues)",
+    "description": "二次元配列を使い、指定した範囲に値をまとめて書き込みます。一つずつ書き込むより高速です。",
+    "code": "function setMultipleCellValues() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  const values = [\n    ['商品A', 100, 5],\n    ['商品B', 150, 3],\n    ['商品C', 200, 8]\n  ];\n  // A2セルから始まる3x3の範囲に値を設定\n  sheet.getRange(2, 1, 3, 3).setValues(values);\n}",
+    "result": "アクティブシートのA2:C4の範囲に、配列で指定したデータが一括で入力されます。",
+    "tags": [
+      "スプレッドシート操作",
+      "セル操作",
+      "二次元配列",
+      "範囲",
+      "範囲書き込み",
+      "設定",
+      "高速化"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "spreadsheet-last-col-001",
+    "category": "スプレッドシート操作",
+    "tab": "最終行・最終列の取得",
+    "title": "データが入力されている最終列を取得する",
+    "description": "シート内でデータが入力されている最後の列番号を取得します。",
+    "code": "function findLastColumn() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  const lastCol = sheet.getLastColumn();\n  Logger.log('最終列は ' + lastCol + ' 列目です。');\n}",
+    "result": "実行ログに、データが存在する最後の列番号が表示されます。",
+    "tags": [
+      "Sheet",
+      "getLastColumn",
+      "スプレッドシート操作",
+      "データ操作",
+      "取得",
+      "最終列"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "spreadsheet-sheet-003",
+    "category": "スプレッドシート操作",
+    "tab": "シート操作",
+    "title": "範囲の値をクリアする",
+    "description": "指定した範囲のデータのみを削除します。書式（色や罫線など）は保持されます。",
+    "code": "function clearRangeContent() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n  // A1:C10の範囲のデータをクリア\n  sheet.getRange('A1:C10').clearContent();\n}",
+    "result": "指定した範囲のセルの値がすべて消去されますが、背景色などの書式は残ります。",
+    "tags": [
+      "clearContent",
+      "クリア",
+      "スプレッドシート操作",
+      "セル操作",
+      "削除",
+      "範囲"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "spreadsheet-sheet-004",
+    "category": "スプレッドシート操作",
+    "tab": "シート操作",
+    "title": "シートをコピーして新しいシートを作成する",
+    "description": "既存のシートを完全に複製して、同じスプレッドシート内に新しいシートを作成します。",
+    "code": "function copySheet() {\n  const ss = SpreadsheetApp.getActiveSpreadsheet();\n  const sourceSheet = ss.getSheetByName('原本'); // コピー元のシート名\n  if (sourceSheet) {\n    const newSheet = sourceSheet.copyTo(ss);\n    newSheet.setName('原本のコピー ' + new Date().toLocaleTimeString());\n  }\n}",
+    "result": "「原本」シートの完全なコピーが、新しい名前でスプレッドシート内に追加されます。",
+    "tags": [
+      "Sheet",
+      "copyTo",
+      "コピー",
+      "シート",
+      "スプレッドシート操作",
+      "複製"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "workspace-gmail-002",
+    "category": "Workspaceサービス連携",
+    "tab": "Gmail",
+    "title": "添付ファイル付きでメールを送信する",
+    "description": "Googleドライブ上のファイルを取得し、メールに添付して送信します。",
+    "code": "function sendEmailWithAttachment() {\n  const recipient = 'user@example.com';\n  const subject = '添付ファイル付きテスト';\n  const body = 'ファイルをお送りします。';\n  // ドライブからIDでファイルを取得\n  const file = DriveApp.getFileById('xxxxxxxx_FILE_ID_xxxxxxxx');\n\n  // MimeTypeはファイルの形式を指定するためのGASの標準機能です\n  GmailApp.sendEmail(recipient, subject, body, {\n    attachments: [file.getAs(MimeType.PDF)] // PDFとして添付\n  });\n}",
+    "result": "指定したメールアドレスに、PDFファイルが添付されたメールが送信されます。",
+    "tags": [
+      "GmailApp",
+      "Googleドライブ",
+      "MimeType",
+      "メール",
+      "メール送信",
+      "添付ファイル",
+      "送信"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "workspace-calendar-002",
+    "category": "Workspaceサービス連携",
+    "tab": "Googleカレンダー",
+    "title": "特定の日付の予定をすべて取得する",
+    "description": "指定した日付（ここでは今日）の予定をすべて取得し、そのタイトルをログに出力します。",
+    "code": "function getTodaysEvents() {\n  const calendar = CalendarApp.getDefaultCalendar();\n  const today = new Date();\n  const events = calendar.getEventsForDay(today);\n\n  events.forEach(event => {\n    Logger.log('予定: ' + event.getTitle());\n  });\n}",
+    "result": "実行ログに、今日の予定のタイトルがリスト表示されます。",
+    "tags": [
+      "CalendarApp",
+      "Googleカレンダー",
+      "getEventsForDay",
+      "イベント",
+      "取得",
+      "読み取り"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "workspace-drive-002",
+    "category": "Workspaceサービス連携",
+    "tab": "Googleドライブ",
+    "title": "名前を指定してフォルダを検索し、その中にファイルを作成する",
+    "description": "特定の名前のフォルダを探し、見つかったフォルダの直下に新しいテキストファイルを作成します。",
+    "code": "function createFileInFolder() {\n  const folders = DriveApp.getFoldersByName('報告書'); // '報告書'フォルダを検索\n  if (folders.hasNext()) {\n    const folder = folders.next(); // 最初の'報告書'フォルダを取得\n    folder.createFile('2025-06-30_報告.txt', '本日の作業は完了しました。');\n  } else {\n    Logger.log('報告書フォルダが見つかりませんでした。');\n  }\n}",
+    "result": "Googleドライブ上の「報告書」という名前のフォルダ内に、新しいテキストファイルが作成されます。",
+    "tags": [
+      "Googleドライブ",
+      "createFile",
+      "getFoldersByName",
+      "ファイル",
+      "フォルダ",
+      "作成",
+      "検索"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "workspace-docs-001",
+    "category": "Workspaceサービス連携",
+    "tab": "Googleドキュメント",
+    "title": "ドキュメントの末尾にテキストを追記する",
+    "description": "現在開いているGoogleドキュメントを取得し、その本文の最後に新しい段落としてテキストを追加します。",
+    "code": "function appendTextToDocument() {\n  const doc = DocumentApp.getActiveDocument();\n  const body = doc.getBody();\n  body.appendParagraph('このテキストはスクリプトによって追記されました。');\n}",
+    "result": "現在アクティブなGoogleドキュメントの最後に、指定したテキストが新しい段落として追加されます。",
+    "tags": [
+      "Body",
+      "Googleドキュメント",
+      "appendParagraph",
+      "テキスト",
+      "追加"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "workspace-form-001",
+    "category": "Workspaceサービス連携",
+    "tab": "Googleフォーム",
+    "title": "フォーム送信時に回答内容を取得する",
+    "description": "フォームが送信された際にトリガーで実行される関数です。イベントオブジェクト(e)から回答内容を取得します。",
+    "code": "// この関数はフォームのトリガー（フォーム送信時）に設定する必要があります\nfunction onFormSubmit(e) {\n  const itemResponses = e.response.getItemResponses();\n  let mailBody = '新しい回答がありました。\\n\\n';\n  \n  itemResponses.forEach(response => {\n    const question = response.getItem().getTitle();\n    const answer = response.getResponse();\n    mailBody += question + ': ' + answer + '\\n';\n  });\n  \n  Logger.log(mailBody); // 実際はGmailApp.sendEmailなどで通知する\n}",
+    "result": "フォームが送信されると、すべての質問と回答が整形されてログに出力されます。メール通知などに活用できます。",
+    "tags": ["FormApp", "Googleフォーム", "トリガー", "回答取得", "自動化"],
+    "level": "application"
+  },
+  {
+    "id": "workspace-slides-001",
+    "category": "Workspaceサービス連携",
+    "tab": "Googleスライド",
+    "title": "プレゼンテーションに新しいスライドを追加する",
+    "description": "現在開いているGoogleスライドに、タイトルと本文が設定された新しいスライドを末尾に追加します。",
+    "code": "function addNewSlide() {\n  const presentation = SlidesApp.getActivePresentation();\n  const slide = presentation.appendSlide(SlidesApp.Layout.TITLE_AND_BODY);\n  \n  slide.getShapes().getPlaceholder(SlidesApp.PlaceholderType.TITLE).getText().setText('新しい議題');\n  slide.getShapes().getPlaceholder(SlidesApp.PlaceholderType.BODY).getText().setText('・項目1\\n・項目2\\n・項目3');\n}",
+    "result": "現在アクティブなGoogleスライドの最後に、タイトルと本文が入力された新しいスライドが追加されます。",
+    "tags": [
+      "Googleスライド",
+      "SlidesApp",
+      "appendSlide",
+      "プレゼンテーション",
+      "作成",
+      "追加"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "automation-trigger-003",
+    "category": "自動化とトリガー",
+    "tab": "トリガー",
+    "title": "ファイルを開いた時に実行する (onOpen)",
+    "description": "スプレッドシートやドキュメントを開いた（または再読み込みした）際に自動で実行される単純トリガーです。カスタムメニューの作成によく利用されます。権限が必要な処理は実行できません。",
+    "code": "function onOpen(e) {\n  // この関数はファイルを開くだけで自動実行される\n  SpreadsheetApp.getUi()\n    .createMenu('ようこそ！')\n    .addItem('ご挨拶', 'showGreeting')\n    .addToUi();\n}\n\nfunction showGreeting() {\n  SpreadsheetApp.getUi().alert('こんにちは！');\n}",
+    "result": "ファイルをリロードすると、メニューバーに「ようこそ！」というカスタムメニューが追加されます。",
+    "tags": [
+      "イベント駆動",
+      "スプレッドシート操作",
+      "トリガー",
+      "単純トリガー",
+      "画面操作",
+      "自動化"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "automation-trigger-004",
+    "category": "自動化とトリガー",
+    "tab": "トリガー",
+    "title": "セルを編集した時に実行する (onEdit)",
+    "description": "ユーザーがスプレッドシートのセルの値を変更した際に自動で実行される単純トリガーです。イベントオブジェクト(e)から編集されたセルなどの情報を取得できます。",
+    "code": "function onEdit(e) {\n  const range = e.range; // 編集されたセル範囲を取得\n  const sheet = range.getSheet();\n  // A列が編集されたら、隣のB列にタイムスタンプを記録\n  if (range.getColumn() == 1) {\n    sheet.getRange(range.getRow(), 2).setValue(new Date());\n  }\n}",
+    "result": "スプレッドシートのA列のいずれかのセルを編集すると、同じ行のB列に現在の日時が自動的に入力されます。",
+    "tags": ["タイムスタンプ", "トリガー", "単純トリガー", "自動化"],
+    "level": "application"
+  },
+  {
+    "id": "automation-trigger-005",
+    "category": "自動化とトリガー",
+    "tab": "トリガー",
+    "title": "毎週月曜日の朝に実行するトリガーを設置",
+    "description": "プログラムによって、毎週特定曜日の決まった時間に実行される時間主導型トリガーを作成します。",
+    "code": "function createWeeklyTrigger() {\n  // 既存のトリガーを削除して重複を防ぐ\n  ScriptApp.getProjectTriggers().forEach(t => {\n    if (t.getHandlerFunction() === 'weeklyReport') ScriptApp.deleteTrigger(t);\n  });\n  // 毎週月曜日の午前8時〜9時に実行\n  ScriptApp.newTrigger('weeklyReport')\n    .timeBased()\n    .onWeekDay(ScriptApp.WeekDay.MONDAY)\n    .atHour(8)\n    .create();\n}\n\nfunction weeklyReport() {\n  // 週次レポートを送信するなどの処理\n  console.log('週次タスクを実行しました。');\n}",
+    "result": "`createWeeklyTrigger`を一度実行するとトリガーが設定され、毎週月曜の朝に`weeklyReport`関数が自動実行されるようになります。",
+    "tags": [
+      "ScriptApp",
+      "timeBased",
+      "トリガー",
+      "予約",
+      "定時実行",
+      "時間主導",
+      "自動化"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "automation-auth-001",
+    "category": "自動化とトリガー",
+    "tab": "権限と実行コンテキスト",
+    "title": "スクリプトの実行者情報を取得する",
+    "description": "スクリプトを実行しているユーザー（アクティブユーザー）と、トリガーなどを設定したユーザー（エフェクティブユーザー）のメールアドレスを取得します。これにより、誰が操作しているかに応じて処理を変えることができます。",
+    "code": "function checkUserContext() {\n  // このスクリプトを「実行」したあなたのアドレス\n  const activeUser = Session.getActiveUser().getEmail();\n  // このプロジェクトの所有者（またはトリガー設置者）のアドレス\n  const effectiveUser = Session.getEffectiveUser().getEmail();\n\n  Logger.log('Active User: ' + activeUser);\n  Logger.log('Effective User: ' + effectiveUser);\n}",
+    "result": "実行ログに、アクティブユーザーとエフェクティブユーザーのメールアドレスが表示されます。トリガーで実行した場合、両者が異なることがあります。",
+    "tags": [
+      "Session",
+      "getActiveUser",
+      "getEffectiveUser",
+      "ユーザー情報",
+      "実行コンテキスト",
+      "権限"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "ui-dialog-001",
+    "category": "UIとHTML",
+    "tab": "アラートとプロンプト",
+    "title": "シンプルなアラートダイアログを表示",
+    "description": "ユーザーにメッセージを通知するための、OKボタンのみの最もシンプルなダイアログを表示します。",
+    "code": "function showAlert() {\n  SpreadsheetApp.getUi().alert('処理が完了しました。');\n}",
+    "result": "スプレッドシートの中央に「処理が完了しました。」というメッセージとOKボタンが表示されます。",
+    "tags": ["alert", "スプレッドシート操作", "ダイアログ", "画面操作", "通知"],
+    "level": "basic"
+  },
+  {
+    "id": "ui-dialog-002",
+    "category": "UIとHTML",
+    "tab": "アラートとプロンプト",
+    "title": "ユーザーからの入力を受け付けるプロンプトを表示",
+    "description": "ユーザーにテキスト入力を促すダイアログを表示し、入力された値と押されたボタンを取得します。",
+    "code": "function showPrompt() {\n  const ui = SpreadsheetApp.getUi();\n  const response = ui.prompt('名前を入力してください', ui.ButtonSet.OK_CANCEL);\n\n  if (response.getSelectedButton() == ui.Button.OK) {\n    const name = response.getResponseText();\n    ui.alert(name + 'さん、こんにちは！');\n  }\n}",
+    "result": "入力ダイアログが表示され、名前を入力してOKを押すと、その名前を含んだ挨拶のアラートが表示されます。キャンセルを押した場合は何も起こりません。",
+    "tags": [
+      "prompt",
+      "スプレッドシート操作",
+      "ダイアログ",
+      "ユーザー入力",
+      "画面操作"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "ui-menu-002",
+    "category": "UIとHTML",
+    "tab": "カスタムメニューの作成",
+    "title": "セパレーターとサブメニューを持つメニューを作成",
+    "description": "メニュー項目を区切り線で分割したり、階層構造（サブメニュー）を持つ複雑なカスタムメニューを作成します。",
+    "code": "function onOpen() {\n  SpreadsheetApp.getUi()\n    .createMenu('高度なメニュー')\n    .addItem('機能Aを実行', 'myFunctionA')\n    .addSeparator() // 区切り線\n    .addSubMenu(SpreadsheetApp.getUi().createMenu('その他の機能')\n      .addItem('機能Bを実行', 'myFunctionB')\n      .addItem('機能Cを実行', 'myFunctionC'))\n    .addToUi();\n}\n\nfunction myFunctionA(){/* ... */}\nfunction myFunctionB(){/* ... */}\nfunction myFunctionC(){/* ... */}",
+    "result": "ファイルを開くとメニューバーに「高度なメニュー」が追加され、その中に区切り線と「その他の機能」というサブメニューが表示されます。",
+    "tags": [
+      "addSeparator",
+      "addSubMenu",
+      "カスタムメニュー",
+      "スプレッドシート操作",
+      "画面操作"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "ui-html-002",
+    "category": "UIとHTML",
+    "tab": "HTML表示",
+    "title": "HTMLサービスでモーダルダイアログを表示",
+    "description": "HTMLファイルを使って、スプレッドシートの操作をブロックするモーダルダイアログ（ポップアップウィンドウ）を表示します。",
+    "code": "// --- Code.gs ---\nfunction showCustomDialog() {\n  // HTMLファイルからコンテンツを作成\n  const htmlOutput = HtmlService.createHtmlOutputFromFile('dialog')\n    .setWidth(300)\n    .setHeight(200);\n  SpreadsheetApp.getUi().showModalDialog(htmlOutput, 'カスタムダイアログ');\n}\n\n// --- dialog.html (別途作成) ---\n// <!DOCTYPE html>\n// <html>\n//  <head><base target=\"_top\"></head>\n//  <body>\n//    <p>これはモーダルダイアログです。</p>\n//    <input type=\"button\" value=\"閉じる\" onclick=\"google.script.host.close()\" />\n//  </body>\n// </html>",
+    "result": "`showCustomDialog`を実行すると、スプレッドシートの中央にHTMLで作成されたダイアログが表示されます。このダイアログを閉じるまでシートの操作はできません。",
+    "tags": [
+      "HTML",
+      "HTML表示",
+      "showModalDialog",
+      "スプレッドシート操作",
+      "ダイアログ",
+      "画面作成",
+      "画面操作"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "ui-html-003",
+    "category": "UIとHTML",
+    "tab": "HTML表示",
+    "title": "HTMLからGASの関数を実行する (google.script.run)",
+    "description": "サイドバーやダイアログ内のボタンクリックなどをきっかけに、サーバーサイドのGAS関数を呼び出して処理を実行させます。",
+    "code": "// --- Code.gs ---\nfunction showSidebarWithButton() {\n  const html = HtmlService.createHtmlOutputFromFile('sidebar_button');\n  SpreadsheetApp.getUi().showSidebar(html);\n}\n\nfunction doSomethingOnServer(text) {\n  SpreadsheetApp.getUi().alert('サーバーサイドで処理を実行しました: ' + text);\n}\n\n// --- sidebar_button.html ---\n// ...\n// <input type=\"text\" id=\"my-text\" value=\"サンプル\" />\n// <input type=\"button\" value=\"実行\" \n//  onclick=\"google.script.run.doSomethingOnServer(document.getElementById('my-text').value)\" />\n// ...",
+    "result": "表示されたサイドバーの実行ボタンを押すと、テキストボックスの値を引数として`doSomethingOnServer`関数が呼び出され、スプレッドシートにアラートが表示されます。",
+    "tags": [
+      "HTML表示",
+      "google.script.run",
+      "サーバーサイド連携",
+      "スプレッドシート操作",
+      "画面操作",
+      "非同期処理"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "external-api-002",
+    "category": "外部連携と設定管理",
+    "tab": "外部API",
+    "title": "外部APIにPOSTリクエストを送信する",
+    "description": "UrlFetchAppを使い、JSON形式のデータ（ペイロード）を含んだPOSTリクエストを外部APIのエンドポイントに送信します。Slackへの通知などで利用されます。",
+    "code": "function postToApi() {\n  const url = 'https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX'; // Webhook URL等\n  const payload = {\n    'text': 'GASからのテスト通知です。'\n  };\n\n  const options = {\n    'method': 'post',\n    'contentType': 'application/json',\n    'payload': JSON.stringify(payload)\n  };\n\n  UrlFetchApp.fetch(url, options);\n}",
+    "result": "指定したURL（例: SlackのIncoming Webhook）にデータが送信され、Slackのチャンネルにメッセージが投稿されます。",
+    "tags": [
+      "API",
+      "HTTPリクエスト",
+      "JSON",
+      "POST",
+      "UrlFetchApp",
+      "外部連携"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "external-property-002",
+    "category": "外部連携と設定管理",
+    "tab": "プロパティ保存",
+    "title": "ユーザープロパティでユーザーごとの設定を保存",
+    "description": "ユーザープロパティを使うと、スクリプトを利用するユーザーごとに異なる値を保存できます。個人の設定保存などに利用します。",
+    "code": "function saveUserPreference() {\n  const userProperties = PropertiesService.getUserProperties();\n  userProperties.setProperty('theme', 'dark');\n  Logger.log('ユーザー設定を保存しました。');\n}\n\nfunction loadUserPreference() {\n  const userProperties = PropertiesService.getUserProperties();\n  const theme = userProperties.getProperty('theme');\n  Logger.log('読み込んだテーマ: ' + theme); // 'dark'と表示される\n}",
+    "result": "実行したGoogleアカウントに紐付いてデータが保存されます。他のユーザーが同じスクリプトを実行しても、このデータは読み込めません。",
+    "tags": [
+      "PropertiesService",
+      "getUserProperties",
+      "データ保存",
+      "プロパティ",
+      "個人設定",
+      "永続化"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "external-db-001",
+    "category": "外部連携と設定管理",
+    "tab": "データベース接続",
+    "title": "JDBCサービスで外部データベースに接続",
+    "description": "GASのJDBCサービスを利用して、Google Cloud SQLなどの外部データベースに接続します。別途、GCPプロジェクトでの設定やIPアドレスの許可リスト登録が必要です。",
+    "code": "function connectToDatabase() {\n  // 注意: このコードは事前の設定がなければ動作しません\n  const dbUrl = 'jdbc:google:mysql://<GCPプロジェクトID>:<リージョン>:<インスタンス名>/<データベース名>';\n  const user = 'your_username';\n  const userPassword = 'your_password'; // パスワードはスクリプトプロパティ等で安全に管理すること\n\n  try {\n    const conn = Jdbc.getCloudSqlConnection(dbUrl, user, userPassword);\n    Logger.log('データベース接続に成功しました。');\n    conn.close();\n  } catch (e) {\n    Logger.log('データベース接続に失敗しました: ' + e.message);\n  }\n}",
+    "result": "設定が正しければ、実行ログに「データベース接続に成功しました。」と表示されます。機密情報の管理には十分な注意が必要です。",
+    "tags": ["Cloud SQL", "Jdbc", "MySQL", "SQL", "データベース", "外部連携"],
+    "level": "advance"
+  },
+  {
+    "id": "beginner-editor-002",
+    "category": "はじめてのGAS",
+    "tab": "エディタ操作",
+    "title": "直接URLからエディタを開く",
+    "description": "コンテナに紐付かない、スタンドアロンスクリプトを直接作成・編集します。Webアプリなどの開発に利用します。",
+    "code": "// 1. ブラウザで script.google.com にアクセスします。\n// 2. 左上の「新しいプロジェクト」ボタンをクリックします。",
+    "result": "新しいスタンドアロンプロジェクトのスクリプトエディタが開きます。",
+    "tags": ["Webアプリ", "スクリプトエディタ", "スタンドアロン", "始め方"],
+    "level": "basic"
+  },
+  {
+    "id": "beginner-log-002",
+    "category": "はじめてのGAS",
+    "tab": "ログ出力",
+    "title": "console.log を使ってログを確認する",
+    "description": "Logger.logと同様に動作しますが、よりモダンなJavaScriptの標準的なログ出力方法です。複雑なオブジェクトも展開して見やすい場合があります。",
+    "code": "function checkConsoleLog() {\n  const data = { name: '大石', age: 24 };\n  console.log('ユーザーデータ:', data);\n}",
+    "result": "実行ログに、オブジェクトが展開可能な形式で出力されます。",
+    "tags": ["ログ出力"],
+    "level": "basic"
+  },
+  {
+    "id": "spreadsheet-sheet-005",
+    "category": "スプレッドシート操作",
+    "tab": "シート操作",
+    "title": "URLでスプレッドシートを開く",
+    "description": "スプレッドシートの完全なURLを指定して、特定のファイルを開きます。",
+    "code": "function openSpreadsheetByUrl() {\n  const url = 'https://docs.google.com/spreadsheets/d/xxxxxxxx/edit';\n  const ss = SpreadsheetApp.openByUrl(url);\n  Logger.log('開いたファイル名: ' + ss.getName());\n}",
+    "result": "指定したURLのスプレッドシートがバックグラウンドで開かれ、その名前がログに出力されます。",
+    "tags": [
+      "openByUrl",
+      "スプレッドシート",
+      "スプレッドシート操作",
+      "別ファイル",
+      "取得"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "spreadsheet-sheet-006",
+    "category": "スプレッドシート操作",
+    "tab": "シート操作",
+    "title": "すべてのシートを配列で取得する",
+    "description": "スプレッドシート内に存在するすべてのシートを、シートオブジェクトの配列として取得します。ループ処理と合わせてよく使われます。",
+    "code": "function getAllSheets() {\n  const ss = SpreadsheetApp.getActiveSpreadsheet();\n  const allSheets = ss.getSheets();\n  \n  allSheets.forEach(sheet => {\n    Logger.log(sheet.getName());\n  });\n}",
+    "result": "実行ログに、スプレッドシート内のすべてのシート名が順番に出力されます。",
+    "tags": ["getSheets", "シート", "スプレッドシート操作", "取得", "繰り返し"],
+    "level": "application"
+  },
+  {
+    "id": "spreadsheet-cell-005",
+    "category": "スプレッドシート操作",
+    "tab": "セル操作",
+    "title": "行・列番号で範囲を指定する",
+    "description": "getRangeの引数に(行番号, 列番号, 行数, 列数)を指定することで、より動的に範囲を操作できます。'A1'のような文字列よりループ処理などで扱いやすいです。",
+    "code": "function getRangeByNumbers() {\n  const sheet = SpreadsheetApp.getActiveSheet();\n  // 2行目・3列目(C2)から、5行分・2列分の範囲を取得 (C2:D6)\n  const range = sheet.getRange(2, 3, 5, 2);\n  range.setBackground('#ffc'); // 範囲の背景色を変更して確認\n}",
+    "result": "アクティブシートのC2からD6の範囲の背景色が黄色になります。",
+    "tags": [
+      "Sheet",
+      "getRange",
+      "スプレッドシート操作",
+      "動的",
+      "取得",
+      "範囲"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "spreadsheet-cell-006",
+    "category": "スプレッドシート操作",
+    "tab": "セル操作",
+    "title": "書式を含めて範囲をクリアする (clear)",
+    "description": "指定した範囲のデータだけでなく、背景色、罫線、フォントスタイルなどの書式もすべて削除します。",
+    "code": "function clearAll() {\n  const sheet = SpreadsheetApp.getActiveSheet();\n  // A1:C10の範囲のデータと書式をすべてクリア\n  sheet.getRange('A1:C10').clear();\n}",
+    "result": "指定した範囲が完全に初期状態（値なし、書式なし）に戻ります。",
+    "tags": [
+      "clear",
+      "クリア",
+      "スプレッドシート操作",
+      "セル操作",
+      "削除",
+      "書式",
+      "範囲"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "spreadsheet-sheet-007",
+    "category": "スプレッドシート操作",
+    "tab": "シート操作",
+    "title": "シート全体をクリアする",
+    "description": "シート内のすべてのセルをクリアします。シート自体は削除されません。",
+    "code": "function clearWholeSheet() {\n  const sheet = SpreadsheetApp.getActiveSheet();\n  sheet.clear();\n}",
+    "result": "現在アクティブなシートのすべてのデータと書式が削除されます。",
+    "tags": [
+      "Sheet",
+      "clear",
+      "クリア",
+      "シート",
+      "スプレッドシート操作",
+      "削除"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "workspace-gmail-003",
+    "category": "Workspaceサービス連携",
+    "tab": "Gmail",
+    "title": "詳細オプションを指定してメールを送信",
+    "description": "送信者名、CC、BCC、返信先、HTML形式の本文など、詳細なオプションを指定してメールを送信します。",
+    "code": "function sendAdvancedEmail() {\n  GmailApp.sendEmail('recipient@example.com', '件名', 'このメールはHTML形式です。', {\n    name: 'GASの自動通知',\n    cc: 'cc@example.com',\n    bcc: 'bcc@example.com',\n    replyTo: 'noreply@example.com',\n    htmlBody: '<h1>重要なお知らせ</h1><p>HTMLメールのテストです。<a href=\"https://www.google.com\">リンク</a>も設置できます。</p>'\n  });\n}",
+    "result": "指定した内容で、リッチなHTMLメールが送信されます。",
+    "tags": ["GmailApp", "HTMLメール", "bcc", "cc", "オプション", "メール送信"],
+    "level": "application"
+  },
+  {
+    "id": "workspace-gmail-004",
+    "category": "Workspaceサービス連携",
+    "tab": "Gmail",
+    "title": "メールを下書きとして保存する",
+    "description": "メールを送信せず、Gmailの下書きフォルダに保存します。内容の最終確認を人間が行う場合に便利です。",
+    "code": "function createEmailDraft() {\n  GmailApp.createDraft('recipient@example.com', '【下書き】月次報告', '本文は後で編集します。');\n}",
+    "result": "Gmailの下書きフォルダに、指定した宛先・件名・本文のメールが作成されます。",
+    "tags": ["GmailApp", "createDraft", "メール", "下書き", "作成"],
+    "level": "application"
+  },
+  {
+    "id": "workspace-calendar-003",
+    "category": "Workspaceサービス連携",
+    "tab": "Googleカレンダー",
+    "title": "IDを指定してカレンダーを取得する",
+    "description": "デフォルトカレンダー以外（共有カレンダーなど）を、そのIDを指定して操作します。カレンダーIDはカレンダーの設定画面から確認できます。",
+    "code": "function getCalendar() {\n  const calendarId = 'xxxxxxxx@group.calendar.google.com';\n  const calendar = CalendarApp.getCalendarById(calendarId);\n  Logger.log('カレンダー名: ' + calendar.getName());\n}",
+    "result": "指定したIDのカレンダーが取得され、その名前がログに出力されます。",
+    "tags": [
+      "CalendarApp",
+      "Googleカレンダー",
+      "getCalendarById",
+      "共有カレンダー",
+      "取得"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "workspace-drive-003",
+    "category": "Workspaceサービス連携",
+    "tab": "Googleドライブ",
+    "title": "フォルダ内のファイルをループ処理する",
+    "description": "指定したフォルダ内のすべてのファイルを取得し、whileループを使って一つずつ処理します。ファイル名の一括変更などに利用できます。",
+    "code": "function listFilesInFolder() {\n  const folder = DriveApp.getFolderById('YOUR_FOLDER_ID');\n  const files = folder.getFiles();\n  \n  while (files.hasNext()) {\n    const file = files.next();\n    Logger.log(file.getName() + ' (ID: ' + file.getId() + ')');\n  }\n}",
+    "result": "実行ログに、指定したフォルダ内にあるすべてのファイルのファイル名とIDがリスト表示されます。",
+    "tags": [
+      "Googleドライブ",
+      "getFiles",
+      "hasNext",
+      "next",
+      "ファイル一覧",
+      "繰り返し"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "workspace-drive-004",
+    "category": "Workspaceサービス連携",
+    "tab": "Googleドライブ",
+    "title": "ファイルをコピーする",
+    "description": "既存のファイルを、新しい名前を付けて同じフォルダ内（または別のフォルダ）にコピーします。",
+    "code": "function copyFile() {\n  const fileToCopy = DriveApp.getFileById('YOUR_FILE_ID');\n  // 同じフォルダに、新しい名前でコピーを作成\n  fileToCopy.makeCopy('コピー - ' + fileToCopy.getName());\n}",
+    "result": "指定したファイルのコピーが、接頭辞「コピー - 」付きの新しいファイル名で作成されます。",
+    "tags": ["Googleドライブ", "makeCopy", "コピー", "ファイル", "複製"],
+    "level": "application"
+  },
+  {
+    "id": "automation-trigger-006",
+    "category": "自動化とトリガー",
+    "tab": "トリガー",
+    "title": "アドオンインストール時に実行する (onInstall)",
+    "description": "作成したアドオンがユーザーによってインストールされた直後に一度だけ実行されます。初期設定やウェルカムメッセージの表示などに使われます。",
+    "code": "function onInstall(e) {\n  onOpen(e); // インストール直後にカスタムメニューを表示させるため、onOpenを呼び出す\n  SpreadsheetApp.getUi().alert('アドオンのインストールありがとうございます！');\n}",
+    "result": "アドオンをインストールすると、ウェルカムメッセージが表示され、カスタムメニューが作成されます。",
+    "tags": [
+      "onInstall",
+      "アドオン",
+      "スプレッドシート操作",
+      "トリガー",
+      "初期設定",
+      "単純トリガー"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "external-property-003",
+    "category": "外部連携と設定管理",
+    "tab": "プロパティ保存",
+    "title": "ドキュメントプロパティでファイル単位の設定を保存",
+    "description": "ドキュメントプロパティは、特定のドキュメントファイルに紐付いてデータを保存します。そのファイルのコピーを作成すると、プロパティも一緒にコピーされます。",
+    "code": "function saveDocumentProperty() {\n  const docProperties = PropertiesService.getDocumentProperties();\n  docProperties.setProperty('version', '1.2.0');\n  Logger.log('ドキュメントプロパティを保存しました。');\n}",
+    "result": "このスクリプトが紐付いているスプレッドシートやドキュメントファイル自体にデータが保存されます。ファイルへのアクセス権があれば誰でもこのプロパティを読み書きできます。",
+    "tags": [
+      "PropertiesService",
+      "getDocumentProperties",
+      "データ保存",
+      "ファイル設定",
+      "プロパティ",
+      "永続化"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "workspace-docs-002",
+    "category": "Workspaceサービス連携",
+    "tab": "Googleドキュメント",
+    "title": "プレースホルダーの文字列を置換する",
+    "description": "ドキュメント本文内の特定の文字列（例: {{name}}）を、指定したテキストに一括で置き換えます。帳票の自動作成などで頻繁に利用されます。",
+    "code": "function replacePlaceholderText() {\n  const body = DocumentApp.getActiveDocument().getBody();\n  const name = '大石'; // スプレッドシートなどから取得した値\n  body.replaceText('{{name}}', name);\n}",
+    "result": "ドキュメント内にあるすべての `{{name}}` という文字列が「大石」に置き換えられます。",
+    "tags": [
+      "Googleドキュメント",
+      "replaceText",
+      "テキスト",
+      "帳票作成",
+      "置換"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "workspace-form-002",
+    "category": "Workspaceサービス連携",
+    "tab": "Googleフォーム",
+    "title": "フォームの全回答を取得して処理する",
+    "description": "特定のフォームにこれまで送信されたすべての回答を取得し、ループ処理で内容を一つずつ取り出します。",
+    "code": "function getAllFormResponses() {\n  const form = FormApp.openById('YOUR_FORM_ID');\n  const formResponses = form.getResponses();\n\n  formResponses.forEach(formResponse => {\n    Logger.log('--- 新しい回答 ---');\n    const itemResponses = formResponse.getItemResponses();\n    itemResponses.forEach(itemResponse => {\n      Logger.log(itemResponse.getItem().getTitle() + ': ' + itemResponse.getResponse());\n    });\n  });\n}",
+    "result": "実行ログに、指定したフォームのすべての回答が、一件ずつ区切られて表示されます。",
+    "tags": [
+      "FormApp",
+      "Googleフォーム",
+      "getResponses",
+      "openById",
+      "データ集計",
+      "回答取得"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "workspace-slides-002",
+    "category": "Workspaceサービス連携",
+    "tab": "Googleスライド",
+    "title": "スライドに図形を追加する",
+    "description": "特定のスライド内に、テキストボックスなどの図形を指定した位置と大きさで挿入します。",
+    "code": "function insertShapeToSlide() {\n  const presentation = SlidesApp.getActivePresentation();\n  // 最初のスライドを取得\n  const slide = presentation.getSlides()[0];\n  // テキストボックスを追加 (x座標, y座標, 幅, 高さ)\n  const shape = slide.insertShape(SlidesApp.ShapeType.TEXT_BOX, 50, 50, 400, 100);\n  shape.getText().setText('スクリプトから追加したテキストボックス');\n}",
+    "result": "プレゼンテーションの最初のスライドの左上に、指定したテキストが入ったテキストボックスが追加されます。",
+    "tags": [
+      "Googleスライド",
+      "SlidesApp",
+      "insertShape",
+      "テキストボックス",
+      "図形",
+      "追加"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "beginner-error-002",
+    "category": "はじめてのGAS",
+    "tab": "エラー処理",
+    "title": "finallyとエラー通知を組み合わせた高度なエラー処理",
+    "description": "try-catchにfinallyブロックを追加し、エラーの有無にかかわらず最終処理を実行します。catchブロックではエラー内容を管理者にメールで通知します。",
+    "code": "function safeFunctionWithNotify() {\n  try {\n    // エラーが起こるかもしれない処理\n    const data = JSON.parse('[invalid json}');\n  } catch (e) {\n    // エラーが発生した場合の処理\n    console.error('エラーが発生: ' + e.message);\n    const subject = 'スクリプトエラー通知';\n    const body = 'エラーが発生しました。\\n\\n' + e.stack;\n    GmailApp.sendEmail('admin@example.com', subject, body);\n  } finally {\n    // エラーの有無にかかわらず必ず実行される\n    console.log('処理を終了します。');\n  }\n}",
+    "result": "エラーが発生し、実行ログにエラー内容と「処理を終了します。」が表示され、指定した管理者のメールアドレスにエラー詳細が送信されます。",
+    "tags": [
+      "GmailApp",
+      "finally",
+      "try-catch",
+      "エラー処理",
+      "エラー通知",
+      "例外処理"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "beginner-event-001",
+    "category": "はじめてのGAS",
+    "tab": "イベントオブジェクト",
+    "title": "onEdit(e)で編集前後の値を取得する",
+    "description": "onEditトリガーで渡されるイベントオブジェクト(e)から、編集されたセル(e.range)、編集後の値(e.value)、編集前の値(e.oldValue)を取得します。",
+    "code": "function onEditDetailed(e) {\n  const range = e.range;\n  const sheet = range.getSheet();\n  const oldValue = e.oldValue;\n  const newValue = e.value;\n\n  // 編集ログを別のシートに記録\n  const logSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('編集ログ');\n  if (logSheet && sheet.getName() !== '編集ログ') {\n    const logMessage = `セル${range.getA1Notation()}が「${oldValue}」から「${newValue}」に変更されました。`;\n    logSheet.appendRow([new Date(), logMessage]);\n  }\n}",
+    "result": "（「編集ログ」というシートを事前に作成しておく必要があります）シートのセルを編集すると、編集ログシートに「いつ、どのセルが、何から何に」変更されたかが記録されます。",
+    "tags": [
+      "authMode",
+      "e.oldValue",
+      "e.value",
+      "range",
+      "source",
+      "スプレッドシート操作",
+      "トリガー",
+      "監査ログ"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "automation-auth-002",
+    "category": "自動化とトリガー",
+    "tab": "権限と実行コンテキスト",
+    "title": "権限承認のフローについて",
+    "description": "スクリプトがユーザーデータにアクセスするには、初回実行時にユーザーによる明示的な許可が必要です。この一連の流れを権限承認フローと呼びます。",
+    "code": "// これはコードではなく、ユーザー操作のフローです。\n\n// 1. 初回実行時にポップアップが表示される。\n// 2. 「権限を確認」をクリック。\n// 3. Googleアカウントを選択。\n// 4. 「このアプリは Google で確認されていません」という警告が出たら、[詳細] > [（プロジェクト名）（安全でないページ）に移動] をクリック。\n// 5. 表示された権限（スコープ）の内容を確認し、「許可」をクリックする。",
+    "result": "一度許可すると、同じスクリプトでは再度承認を求められることはありません。警告画面は、未審査の個人作成スクリプトでは標準的な表示であり、必ずしも危険という意味ではありません。",
+    "tags": ["スコープ", "セキュリティ", "初回実行", "承認", "権限"],
+    "level": "basic"
+  },
+  {
+    "id": "automation-auth-003",
+    "category": "自動化とトリガー",
+    "tab": "権限と実行コンテキスト",
+    "title": "スコープとは？(appsscript.jsonでの設定)",
+    "description": "スコープとは、スクリプトが要求する権限の範囲のことです。マニフェストファイル(appsscript.json)で明示的に指定することで、必要最小限の権限のみをユーザーに要求することが推奨されます（最小権限の原則）。",
+    "code": "// マニフェストファイル appsscript.json での設定例\n{\n  \"timeZone\": \"Asia/Tokyo\",\n  \"dependencies\": {},\n  \"exceptionLogging\": \"STACKDRIVER\",\n  \"runtimeVersion\": \"V8\",\n  \"oauthScopes\": [\n    \"https://www.googleapis.com/auth/spreadsheets.currentonly\",\n    \"https://www.googleapis.com/auth/gmail.send\",\n    \"https://www.googleapis.com/auth/script.external_request\"\n  ]\n}",
+    "result": "・ `spreadsheets.currentonly`: 現在開いているスプレッドシートへのアクセスのみを許可します。\n・ `gmail.send`: メールの送信のみを許可します（読み取りや削除は不可）。\n・ `script.external_request`: 外部APIへのアクセスを許可します。",
+    "tags": [
+      "appsscript.json",
+      "スコープ",
+      "セキュリティ",
+      "マニフェスト",
+      "最小権限の原則",
+      "権限"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "automation-auth-004",
+    "category": "自動化とトリガー",
+    "tab": "権限と実行コンテキスト",
+    "title": "getActiveUserとgetEffectiveUserの詳しい解説と比較",
+    "description": "スクリプトが「誰として」実行されているかを把握することは、特にトリガーやWebアプリで重要です。`getActiveUser`は操作者、`getEffectiveUser`は実行主体を返します。\n\n| メソッド | 説明 | 主な使われ方 |\n|:---|:---|:---|\n| `Session.getActiveUser()` | スクリプトを直接操作しているユーザー（ボタンをクリックした人など） | UI操作のログ記録、個人の設定読み込み |\n| `Session.getEffectiveUser()` | スクリプトが権限を利用しているユーザー（トリガーの設置者など） | ファイル読み書きやメール送信など、権限が絡む処理の主体特定 |",
+    "code": "function checkUserContext() {\n  // スクリプトを「操作している」ユーザー\n  const activeUser = Session.getActiveUser().getEmail();\n  \n  // スクリプトが「権限を利用している」ユーザー（実行主体）\n  const effectiveUser = Session.getEffectiveUser().getEmail();\n\n  console.log(`操作中のユーザー (Active User): ${activeUser}`);\n  console.log(`実行主体ユーザー (Effective User): ${effectiveUser}`);\n}",
+    "result": "**getEmail()の注意点:** セキュリティ上、`getEmail()`でメールアドレスが取得できるのは、原則として同じGoogle Workspaceドメイン内のユーザーに限られます。ドメイン外のユーザーや個人のGmailアカウントの場合は、空文字列 (`''`) が返されます。",
+    "tags": [
+      "Session",
+      "getActiveUser",
+      "getEffectiveUser",
+      "ユーザー情報",
+      "実行コンテキスト",
+      "権限"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "automation-auth-005",
+    "category": "自動化とトリガー",
+    "tab": "権限と実行コンテキスト",
+    "title": "【重要】実行コンテキストのユースケース別解説",
+    "description": "`getActiveUser`と`getEffectiveUser`の違いが顕著になる代表的なシナリオです。特にWebアプリの挙動は重要です。",
+    "code": "// この項目はコードではなく、シナリオの解説です。\n// 以下の表が、それぞれのシナリオで checkUserContext() を実行した際の結果を示します。",
+    "result": "| シナリオ | `getActiveUser()` (操作者) | `getEffectiveUser()` (実行主体) | 解説 |\n|:---|:---|:---|:---|\n| Aさんが手動で実行 | Aさん | Aさん | 最も単純なケース。操作者と実行主体は同じ。 |\n| Aさんが設定した時間主導トリガーで実行 | **(なし)** | Aさん | トリガー実行時は直接の操作者がいないため`getActiveUser`は空。実行主体はトリガーを設定したAさん。 |\n| Webアプリ(開発者Bが**「自分として実行」**で公開し、ユーザーAがアクセス) | Aさん | **Bさん** | **【最重要】** Webアプリを操作しているのはAさんだが、スクリプトは開発者Bの権限で実行される。 |\n| Webアプリ(開発者Bが**「ユーザーとして実行」**で公開し、ユーザーAがアクセス) | Aさん | Aさん | AさんはWebアプリ利用時に権限承認を求められ、スクリプトはAさん自身の権限で実行される。 |",
+    "tags": [
+      "Webアプリ",
+      "getActiveUser",
+      "getEffectiveUser",
+      "トリガー",
+      "実行コンテキスト",
+      "権限"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "beginner-event-002",
+    "category": "はじめてのGAS",
+    "tab": "イベントオブジェクト",
+    "title": "onEdit(e)のイベントオブジェクト詳細",
+    "description": "`onEdit(e)`トリガーの引数`e`には、編集イベントに関する詳細な情報が含まれています。これらを利用することで、より高度な処理が可能です。",
+    "code": "function onEditAdvanced(e) {\n  const range = e.range;       // 編集された範囲\n  const oldValue = e.oldValue; // 編集前の値\n  const value = e.value;       // 編集後の値（単一セルの場合）\n  \n  // A列が編集されたら、隣のB列にタイムスタンプを記録\n  if (range.getColumn() == 1) {\n    // offset(行オフセット, 列オフセット)で隣のセルを指定\n    range.offset(0, 1).setValue(new Date());\n  }\n\n  Logger.log(`セル ${range.getA1Notation()} が「${oldValue}」から「${value}」に変更されました。`);\n}",
+    "result": "A列のセルを編集すると、B列にタイムスタンプが記録され、実行ログに編集前後の値を含んだメッセージが表示されます。",
+    "tags": [
+      "e.oldValue",
+      "e.value",
+      "offset",
+      "range",
+      "トリガー",
+      "監査ログ"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "spreadsheet-cell-007",
+    "category": "スプレッドシート操作",
+    "tab": "セル操作",
+    "title": "アクティブなセル・範囲を取得する (getActiveRange)",
+    "description": "ユーザーが現在選択しているセルまたはセル範囲を取得します。UIから実行するスクリプトで頻繁に利用されます。",
+    "code": "function highlightActiveRange() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet();\n  const activeRange = sheet.getActiveRange();\n  \n  // 選択中の範囲の背景色を黄色にする\n  activeRange.setBackground('#fff2cc');\n}",
+    "result": "この関数を実行すると、スプレッドシート上で現在選択している範囲の背景色が黄色に変わります。",
+    "tags": [
+      "Sheet",
+      "getActiveRange",
+      "アクティブ",
+      "スプレッドシート操作",
+      "セル",
+      "取得",
+      "画面操作",
+      "範囲"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "recipe-marketing-001",
+    "category": "レシピ",
+    "tab": "営業・マーケティング",
+    "title": "【レシピ】カレンダーの特定予定5分前に参加者へリマインダーメールを送信",
+    "description": "Googleカレンダーの予定を定期的にチェックし、特定のキーワード（例：「商談」）を含む予定の開始5分前になると、予定の参加者全員に自動でリマインダーメールを送信します。",
+    "code": "function sendEventReminders() {\n  const KEYWORD = '商談'; // このキーワードを含む予定を対象\n  const REMIND_BEFORE_MINUTES = 5;\n\n  const now = new Date();\n  const startTime = new Date(now.getTime() + REMIND_BEFORE_MINUTES * 60 * 1000);\n  const endTime = new Date(startTime.getTime() + 60 * 1000); // 1分間の幅を持たせる\n\n  const events = CalendarApp.getDefaultCalendar().getEvents(startTime, endTime);\n  const notifiedEvents = PropertiesService.getScriptProperties();\n\n  events.forEach(event => {\n    if (event.getTitle().includes(KEYWORD)) {\n      const eventId = event.getId();\n      if (notifiedEvents.getProperty(eventId)) return;\n\n      const guests = event.getGuestList().map(guest => guest.getEmail());\n      if (guests.length === 0) return;\n\n      const title = event.getTitle();\n      const subject = `【リマインダー】まもなく「${title}」が始まります`;\n      const body = `皆様\\n\\nまもなく ${title} の時間です。\\nZoom URL: ${event.getLocation()}\\n\\nよろしくお願いいたします。`;\n      \n      GmailApp.sendEmail(guests.join(','), subject, body);\n      notifiedEvents.setProperty(eventId, 'sent');\n    }\n  });\n}",
+    "result": "この関数を5分ごとの時間主導型トリガーで設定します。キーワードに合致する予定の参加者に、開始5分前に自動でメールが送信されます。",
+    "tags": [
+      "Googleカレンダー",
+      "メール送信",
+      "リマインダー",
+      "レシピ",
+      "営業",
+      "自動化"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "recipe-marketing-002",
+    "category": "レシピ",
+    "tab": "営業・マーケティング",
+    "title": "【レシピ】シートのリストに一括で個別メールを送信（差し込みメール）",
+    "description": "スプレッドシートに記載された顧客リスト（名前、メールアドレスなど）を読み取り、一人ひとりに合わせた内容のメールを一括で送信します。",
+    "code": "function sendBulkPersonalizedEmails() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('顧客リスト');\n  const dataRange = sheet.getRange(2, 1, sheet.getLastRow() - 1, 3); // A列:名前, B列:メアド, C列:送信状況\n  const data = dataRange.getValues();\n\n  data.forEach((row, index) => {\n    const name = row[0];\n    const email = row[1];\n    const status = row[2];\n\n    if (email && status !== '送信済み') {\n      const subject = `${name}様へ 株式会社〇〇より特別なお知らせ`;\n      const body = `${name}様\\n\\nいつもお世話になっております。\\n特別なキャンペーンのご案内です...`;\n      \n      GmailApp.sendEmail(email, subject, body);\n      sheet.getRange(index + 2, 3).setValue('送信済み'); // 送信ステータスを更新\n    }\n  });\n}",
+    "result": "「顧客リスト」シートを元に、まだメールが送られていない顧客に対して個別メールが送信され、C列に「送信済み」と記録されます。",
+    "tags": [
+      "スプレッドシート",
+      "メール送信",
+      "レシピ",
+      "一括送信",
+      "営業",
+      "差し込みメール"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "recipe-marketing-003",
+    "category": "レシピ",
+    "tab": "営業・マーケティング",
+    "title": "【レシピ】スプレッドシートのデータから見積書を自動作成する",
+    "description": "Googleドキュメントであらかじめ作成した「見積書テンプレート」を元に、スプレッドシートの顧客データや金額を差し込んで、新しい見積書ファイルを自動で作成します。",
+    "code": "function createQuotation() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('案件リスト');\n  const activeRow = sheet.getActiveRange().getRow();\n  if (activeRow < 2) return; // ヘッダー行は無視\n\n  const [clientName, projectName, amount] = sheet.getRange(activeRow, 1, 1, 3).getValues()[0];\n  \n  const templateDocId = 'YOUR_TEMPLATE_DOCUMENT_ID'; // 見積書テンプレートのID\n  const outputFolderId = 'YOUR_OUTPUT_FOLDER_ID'; // 見積書を保存するフォルダのID\n\n  const newDocFile = DriveApp.getFileById(templateDocId).makeCopy();\n  const doc = DocumentApp.openById(newDocFile.getId());\n  const body = doc.getBody();\n\n  body.replaceText('{{顧客名}}', clientName);\n  body.replaceText('{{案件名}}', projectName);\n  body.replaceText('{{金額}}', amount.toLocaleString());\n  body.replaceText('{{発行日}}', new Date().toLocaleDateString());\n  doc.saveAndClose();\n  \n  const outputFolder = DriveApp.getFolderById(outputFolderId);\n  newDocFile.moveTo(outputFolder).setName(`${clientName}様_${projectName}御見積書`);\n\n  SpreadsheetApp.getUi().alert('見積書を作成しました。');\n}",
+    "result": "スプレッドシートの行を選択してこの関数を実行すると、テンプレート内の`{{...}}`というプレースホルダーがその行のデータに置き換えられ、指定したGoogleドライブのフォルダに新しい見積書（Googleドキュメント）が作成されます。",
+    "tags": [
+      "Googleドキュメント",
+      "スプレッドシート",
+      "ドライブ",
+      "レシピ",
+      "営業",
+      "帳票作成",
+      "見積書"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "recipe-marketing-004",
+    "category": "レシピ",
+    "tab": "営業・マーケティング",
+    "title": "【レシピ】Webフォームの問い合わせをSlackとスプレッドシートに即時通知",
+    "description": "Googleフォームに新しい問い合わせが来たら、その内容をスプレッドシートの顧客リストに追記すると同時に、営業チームのSlackチャンネルに即時通知します。",
+    "code": "function onFormSubmitToSlack(e) {\n  const itemResponses = e.response.getItemResponses();\n  const data = {};\n  itemResponses.forEach(res => {\n    data[res.getItem().getTitle()] = res.getResponse();\n  });\n\n  // 1. スプレッドシートに記録\n  const sheet = SpreadsheetApp.openById('YOUR_SHEET_ID').getSheetByName('問い合わせ一覧');\n  sheet.appendRow([new Date(), data['会社名'], data['お名前'], data['メールアドレス'], data['お問い合わせ内容']]);\n\n  // 2. Slackに通知\n  const slackWebhookUrl = 'https://hooks.slack.com/services/T000...'; // SlackのIncoming Webhook URL\n  const message = {\n    'text': `【新規問い合わせ】\\n会社名: ${data['会社名']}\\nお名前: ${data['お名前']}\\n内容: ${data['お問い合わせ内容']}`\n  };\n  const options = {\n    'method': 'post',\n    'contentType': 'application/json',\n    'payload': JSON.stringify(message)\n  };\n  UrlFetchApp.fetch(slackWebhookUrl, options);\n}",
+    "result": "この関数をGoogleフォームの「フォーム送信時」のトリガーに設定します。フォームが送信されると、スプレッドシートに行が追加され、Slackにも通知が飛びます。",
+    "tags": [
+      "API",
+      "Googleフォーム",
+      "Slack",
+      "スプレッドシート",
+      "レシピ",
+      "営業",
+      "外部連携",
+      "顧客管理"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "recipe-marketing-005",
+    "category": "レシピ",
+    "tab": "営業・マーケティング",
+    "title": "【レシピ】複数担当者の日報シートをマスターシートに毎朝集計",
+    "description": "各担当者が個別の日報スプレッドシートに記入した内容を、マネージャーが見るための一つの「マスターシート」に、毎朝自動で集計・転記します。",
+    "code": "function consolidateDailyReports() {\n  const masterSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('日報マスター');\n  masterSheet.getRange('A2:D').clearContent(); // 古いデータをクリア\n\n  const reportSheetIds = [\n    'xxxxxxxxxxxx_tanaka_sheet_id_xxxxxxxxxxxx',\n    'xxxxxxxxxxxx_suzuki_sheet_id_xxxxxxxxxxxx'\n    // ...担当者全員分のシートIDを列挙\n  ];\n\n  let allReportData = [];\n  reportSheetIds.forEach(id => {\n    try {\n      const reportSs = SpreadsheetApp.openById(id);\n      const reportSheet = reportSs.getSheets()[0]; // 最初のシートを対象とする\n      const reportData = reportSheet.getRange(2, 1, reportSheet.getLastRow() - 1, 4).getValues();\n      allReportData = allReportData.concat(reportData);\n    } catch (e) {\n      console.error(`シート(ID: ${id})の読み込みに失敗: ${e.message}`);\n    }\n  });\n\n  if (allReportData.length > 0) {\n    masterSheet.getRange(2, 1, allReportData.length, 4).setValues(allReportData);\n  }\n}",
+    "result": "この関数を毎朝実行される時間主導型トリガーに設定します。複数の日報ファイルの内容が、一つのマスターシートにまとめて表示されるようになります。",
+    "tags": [
+      "スプレッドシート",
+      "データ集計",
+      "レシピ",
+      "業務改善",
+      "繰り返し",
+      "自動化"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "debug-error-001",
+    "category": "エラーとデバッグ",
+    "tab": "よくあるエラー",
+    "title": "TypeError: Cannot read property '...' of null",
+    "description": "GASで最も頻繁に遭遇するエラーです。「**null（=何も見つからなかったもの）**に対して、何かをしようとしていますよ」という意味です。\n\n| 主な原因 | 確認・解決策 |\n|:---|:---|\n| `getSheetByName('名前')` | シート名が間違っているか、存在しない。シート名の**全角/半角、前後のスペース**を確認する。 |\n| `getRange('A1').getValue()`の前にシート取得に失敗 | 上記と同様に、`sheet`変数が`null`になっていないか確認する。 |\n| `e.range` (onEditトリガー) | スクリプトエディタから直接`onEdit`関数を実行しようとしている。必ず**シートを実際に編集して**トリガーを発火させる。 |",
+    "code": "// 例: このコードでエラーが出る\nfunction causeTypeError() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('存在しないシート名');\n  // この時点で sheet は null になっている\n  const value = sheet.getRange('A1').getValue(); // nullに対してgetRange()を実行しようとしてエラー\n}",
+    "result": "エラーが出た行の直前で `Logger.log()` を使って、変数が`null`になっていないか確認するのがデバッグの第一歩です。",
+    "tags": [
+      "TypeError",
+      "null",
+      "エラー",
+      "トラブルシューティング",
+      "ログ出力"
+    ],
+    "level": "basic"
+  },
+  {
+    "id": "debug-error-002",
+    "category": "エラーとデバッグ",
+    "tab": "よくあるエラー",
+    "title": "ReferenceError: ... is not defined",
+    "description": "「`...`というものが定義（宣言）されていませんよ」という意味のエラーです。ほとんどの場合、**変数名や関数名のタイプミス**が原因です。",
+    "code": "// 例: このコードでエラーが出る\nfunction causeReferenceError() {\n  const message = 'こんにちは';\n  // 正しくは message だが、mesage とタイプミスしている\n  Logger.log(mesage); \n}",
+    "result": "エラーメッセージで指摘されている変数名や関数名のスペルをよく確認してください。大文字と小文字も区別されます。",
+    "tags": [
+      "ReferenceError",
+      "エラー",
+      "タイプミス",
+      "トラブルシューティング",
+      "ログ出力",
+      "変数宣言"
+    ],
+    "level": "basic"
+  },
+  {
+    "id": "debug-error-003",
+    "category": "エラーとデバッグ",
+    "tab": "よくあるエラー",
+    "title": "Exceeded maximum execution time",
+    "description": "「スクリプトの最大実行時間を超えました」というエラーです。無料のGoogleアカウント（Gmail）では、1回の実行あたり**6分間**という上限があります。",
+    "code": "// 例: このような処理は上限に達しやすい\nfunction causeTimeoutError() {\n  const sheet = SpreadsheetApp.getActiveSheet();\n  // 大量のセルを一つずつ書き換えるのは非常に遅い\n  for (let i = 1; i <= 20000; i++) {\n    sheet.getRange(i, 1).setValue('処理中...');\n  }\n}",
+    "result": "解決策は、処理の効率化です。特に、ループの中での`getValue()`や`setValue()`の繰り返しは避け、`getValues()`や`setValues()`を使って一括で読み書きするように修正します。",
+    "tags": [
+      "6分",
+      "エラー",
+      "タイムアウト",
+      "トラブルシューティング",
+      "効率化",
+      "実行時間",
+      "範囲書き込み",
+      "高速化"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "debug-error-004",
+    "category": "エラーとデバッグ",
+    "tab": "よくあるエラー",
+    "title": "エラー: 承認が必要です (Authorization is required)",
+    "description": "これはコードのバグではなく、**権限が不足している**ことを示すメッセージです。スクリプトに新しいサービス（例: `GmailApp`や`CalendarApp`など）を追加した際によく発生します。",
+    "code": "// 例: 最初はスプレッドシートのみのコードだった\nfunction someFunction() {\n  // ... SpreadsheetAppを使った処理 ...\n\n  // 後からGmailへの通知機能を追加した\n  GmailApp.sendEmail('user@example.com', '件名', '本文'); // ← この行を追加したタイミングで権限が必要になる\n}",
+    "result": "解決策は簡単です。スクリプトエディタから**もう一度、手動で関数を実行**してください。新しい権限を要求するポップアップが表示されるので、内容を確認して「許可」をクリックすれば、エラーは解消されます。",
+    "tags": ["エラー", "スコープ", "トラブルシューティング", "承認", "権限"],
+    "level": "basic"
+  },
+  {
+    "id": "debug-error-005",
+    "category": "エラーとデバッグ",
+    "tab": "代表的なエラー",
+    "title": "エラー: 1日に送信できるメールの上限数を超えました",
+    "description": "`Limit exceeded: Email quota` というエラーメッセージが表示されたら、Gmail経由で送信できるメールの1日あたりの上限数に達したことを意味します。",
+    "code": "// ループ処理で大量のメールを送信しようとすると発生しやすい\nfunction sendManyEmails() {\n  for (let i = 0; i < 200; i++) {\n    // この処理が上限を超えるとエラーで停止する\n    GmailApp.sendEmail('user' + i + '@example.com', '件名', '本文');\n  }\n}",
+    "result": "無料のGmailアカウントでは**100通/日**、有料のGoogle Workspaceアカウントでは**1500通/日**が目安です。上限に達した場合、リセットされるまで約24時間待つ必要があります。設計段階で、1日の送信数が上限を超えないように注意しましょう。",
+    "tags": [
+      "エラー",
+      "トラブルシューティング",
+      "メール送信",
+      "上限",
+      "制限",
+      "割り当て"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "recipe-daily-001",
+    "category": "レシピ",
+    "tab": "日常生活",
+    "title": "【レシピ】Gmailに届く領収書メールを読み取り、スプレッドシートの家計簿に自動記録",
+    "description": "特定のキーワード（例:「Amazon ご注文の確認」）を含むメールをGmailから自動で検索し、その内容から日付、店名、金額を抜き出して、スプレッドシートの家計簿に追記します。",
+    "code": "function recordReceiptsToSheet() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('家計簿');\n  const threads = GmailApp.search('subject:(\"Amazon.co.jp ご注文の確認\") is:unread');\n\n  threads.forEach(thread => {\n    const message = thread.getMessages()[0];\n    const body = message.getPlainBody();\n    const date = message.getDate();\n    \n    // 正規表現で金額を抽出 (例:「ご請求額：￥ 1,234」)\n    const match = body.match(/ご請求額：￥ ([0-9,]+)/);\n    const amount = match ? match[1].replace(/,/g, '') : '不明';\n\n    sheet.appendRow([date, 'Amazon', amount, 'オンラインショッピング']);\n    GmailApp.markThreadAsRead(thread);\n  });\n}",
+    "result": "この関数を1日1回などの時間主導型トリガーで設定します。未読のAmazonの注文確認メールを自動で探し、家計簿シートに日付、店名、金額を記録して、メールを既読にします。",
+    "tags": [
+      "スプレッドシート",
+      "メール送信",
+      "レシピ",
+      "家計簿",
+      "日常生活",
+      "正規表現",
+      "自動化"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "recipe-daily-002",
+    "category": "レシピ",
+    "tab": "日常生活",
+    "title": "【レシピ】毎朝の天気予報をLINEに自動通知する",
+    "description": "外部の天気予報APIを叩いて今日の天気情報を取得し、LINE Notifyというサービスを使って、個人のLINEやグループLINEにメッセージを送信します。",
+    "code": "function notifyWeatherToLINE() {\n  // 1. 天気予報APIから情報を取得 (例: Weather Hacks)\n  const weatherUrl = 'https://weather.tsukumijima.net/api/forecast/city/130010'; // 東京の例\n  const weatherResponse = UrlFetchApp.fetch(weatherUrl);\n  const weatherJson = JSON.parse(weatherResponse.getContentText());\n  const todayWeather = weatherJson.forecasts[0].telop;\n\n  // 2. LINE Notifyに送信\n  const lineToken = 'YOUR_LINE_NOTIFY_TOKEN'; // 自分で発行したLINE Notifyのトークン\n  const lineUrl = 'https://notify-api.line.me/api/notify';\n  const message = `今日の天気は「${todayWeather}」です。`;\n  \n  const options = {\n    'method': 'post',\n    'headers': { 'Authorization': `Bearer ${lineToken}` },\n    'payload': { 'message': message }\n  };\n  UrlFetchApp.fetch(lineUrl, options);\n}",
+    "result": "この関数を毎朝実行される時間主導型トリガーに設定します。事前にLINE Notifyでトークンを発行しておく必要があります。毎朝、LINEに今日の天気が届くようになります。",
+    "tags": [
+      "API",
+      "LINE",
+      "UrlFetchApp",
+      "レシピ",
+      "外部連携",
+      "天気予報",
+      "日常生活"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "recipe-daily-003",
+    "category": "レシピ",
+    "tab": "日常生活",
+    "title": "【レシピ】特定のGmailをLINEに自動で転送・通知する",
+    "description": "Gmailで特定のラベル（例：「LINE転送」）を付けた未読メールを自動で検出し、その内容をLINE Notifyを使ってLINEに通知します。家族からの重要な連絡や、特定サービスの通知を見逃さなくなります。",
+    "code": "function forwardGmailToLINE() {\n  // 1. 検索条件を指定（「LINE転送」ラベルが付いた未読メール）\n  const query = 'is:unread label:LINE転送';\n  const threads = GmailApp.search(query);\n\n  // 2. LINE Notifyのトークンを設定\n  const lineToken = 'YOUR_LINE_NOTIFY_TOKEN'; // 自分で発行したLINE Notifyのトークン\n  const lineUrl = 'https://notify-api.line.me/api/notify';\n\n  threads.forEach(thread => {\n    const message = thread.getMessages()[0]; // スレッドの最初のメッセージを取得\n    const sender = message.getFrom();\n    const subject = message.getSubject();\n    const bodySnippet = message.getPlainBody().substring(0, 150); // 本文の冒頭150文字を取得\n\n    // 3. LINEに送信するメッセージを整形\n    const lineMessage = `\\n【Gmail受信】\\n差出人: ${sender}\\n件名: ${subject}\\n\\n${bodySnippet}...`;\n\n    const options = {\n      'method': 'post',\n      'headers': { 'Authorization': `Bearer ${lineToken}` },\n      'payload': { 'message': lineMessage }\n    };\n\n    try {\n      UrlFetchApp.fetch(lineUrl, options);\n      // 4. 処理後にメールを既読にする（再通知防止）\n      GmailApp.markThreadAsRead(thread);\n    } catch (e) {\n      console.error(`LINEへの通知に失敗しました: ${e.message}`);\n    }\n  });\n}",
+    "result": "この関数を5分おきなどの時間主導型トリガーで設定します。Gmailで「LINE転送」というラベルを作成し、通知したいメールにそのラベルを付けると、LINEに通知が届くようになります。",
+    "tags": [
+      "API",
+      "LINE",
+      "UrlFetchApp",
+      "メール送信",
+      "レシピ",
+      "外部連携",
+      "日常生活",
+      "自動化",
+      "通知"
+    ],
+    "level": "advance"
+  },
+  {
+    "id": "dev-editor-001",
+    "category": "開発と設定ファイル",
+    "tab": "Webエディタの基本",
+    "title": "Webエディタ画面の基本的な見方",
+    "description": "GASの開発は、すべてこのWebエディタ上で行うことができます。主要なボタンの役割を覚えましょう。\n\n- **① 保存ボタン (フロッピーディスクのアイコン):** コードへの変更を保存します。こまめに押す癖をつけましょう。\n- **② 実行ボタン:** ▼の右側にある関数名を選択し、このボタンを押すとその関数が実行されます。\n- **③ デバッグボタン:** コードを一行ずつ確認しながら実行する「デバッグモード」を開始します。\n- **④ 実行ログ:** `Logger.log`やエラーの内容が、画面下に表示されます。",
+    "code": "// この項目は、実際の画面のスクリーンショットを掲載することを強く推奨します。\n// スクリーンショットに①〜④の番号を振って各部を指し示すと、非常に分かりやすくなります。",
+    "result": "まずは「保存」と「実行」の2つのボタンの役割を覚えれば、基本的な開発を始めることができます。",
+    "tags": ["Webエディタ", "ログ出力", "入門", "基本操作", "画面構成"],
+    "level": "basic"
+  },
+  {
+    "id": "dev-log-001",
+    "category": "開発と設定ファイル",
+    "tab": "ログ出力",
+    "title": "最も重要！Logger.logを使ったデバッグ",
+    "screenshot_url": "/assets/img/dev-log-001.png",
+    "description": "`Logger.log()`は、スクリプトの実行途中の変数の値などを確認するための、最もシンプルで強力なデバッグツールです。道筋にパンくずリストを残していくようなイメージで、処理の途中にこまめに仕込んでいきましょう。",
+    "code": "function checkVariable() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('データ');\n  Logger.log('取得したシート: ' + sheet); // sheetがnullになっていないか確認\n\n  if (sheet) {\n    Logger.log('シートが見つかったので、処理を実行します。');\n    const value = sheet.getRange('A1').getValue();\n    Logger.log('A1セルの値: ' + value);\n  } else {\n    Logger.log('シートが見つからなかったので、処理をスキップします。');\n  }\n}",
+    "result": "関数実行後、画面下の「実行ログ」を確認します。`if`文の中と外の両方にログを置くことで、「条件が満たされて処理が実行されたのか、されなかったのか」を正確に把握できます。",
+    "tags": ["Logger.log", "トラブルシューティング", "ログ出力"],
+    "level": "basic"
+  },
+  {
+    "id": "dev-debugger-001",
+    "category": "開発と設定ファイル",
+    "tab": "デバッガの基本的な使い方",
+    "title": "コードを一時停止！デバッガの使い方",
+    "screenshot_url": "/assets/img/dev-debugger-001.png",
+    "description": "デバッガを使うと、スクリプトの実行を好きな場所で一時停止させ、その時点でのすべての変数の状態を詳しく調べることができます。",
+    "code": "function debugExample() {\n  let total = 0;\n  for (let i = 1; i <= 5; i++) {\n    total += i;\n    // ↑ この行の番号の左側をクリックして、ブレークポイント（紫の点）を設置します。\n  }\n  Logger.log(total);\n}",
+    "result": "1. コードの行番号の左をクリックし、ブレークポイントを設定します。\n2. 「実行」ではなく**「デバッグ」ボタン**をクリックします。\n3. スクリプトがブレークポイントで一時停止し、右側の「デバッガ」パネルに変数の現在の値（`total`や`i`の値）が表示されます。\n4. 「ステップオーバー（下向き矢印）」ボタンを押すと、一行ずつ処理を進めることができます。",
+    "tags": [
+      "ステップ実行",
+      "デバッガ",
+      "ブレークポイント",
+      "ログ出力",
+      "変数宣言"
+    ],
+    "level": "application"
+  },
+  {
+    "id": "dev-editor-002",
+    "category": "開発と設定ファイル",
+    "tab": "コード補完とヒントの活用",
+    "title": "タイプミスを防ぐ！コード補完の活用法",
+    "screenshot_url": "/assets/img/dev-editor-002.png",
+    "description": "現在のWebエディタには、VS Codeのように強力なコード補完機能が備わっています。これを活用することで、メソッド名のタイプミスを劇的に減らすことができます。",
+    "code": "function testAutocomplete() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n\n  // 下の行で「sheet.」と入力して少し待ってみてください。\n  // 使えるメソッドの一覧が候補として表示されます。\n  sheet.\n}",
+    "result": "`sheet.`のように、オブジェクトの後に`.`を入力すると、利用可能なメソッドの候補が一覧で表示されます。矢印キーで選択して`Enter`を押せば、確実に入力できます。メソッドにマウスカーソルを合わせると、簡単な説明（ヒント）も表示されます。",
+    "tags": ["IntelliSense", "Webエディタ", "コード補完", "ヒント", "生産性"],
+    "level": "basic"
+  }
+]

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/assets/img/icon-512x512.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <title>GAS地図</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Klee+One&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
+  <body class="top-page">
+    <header class="header" id="header-placeholder"></header>
+    <nav id="nav-placeholder"></nav>
+
+    <main class="main-container">
+      <section class="search-section">
+        <h2>チートシート検索</h2>
+
+        <a href="#reverse-lookup-section" class="reverse-lookup-button">
+          ↓ やりたいことから探す 逆引き検索 ↓
+        </a>
+        <input
+          type="search"
+          id="search-box"
+          placeholder="キーワードを入力 (例: Gmail, 送信)"
+        />
+        <div class="tags-container" id="tags-container">
+          <p>タグで絞り込み:</p>
+        </div>
+      </section>
+
+      <section class="results-section">
+        <h3 id="results-count"></h3>
+        <div class="results-grid" id="results-grid"></div>
+      </section>
+
+      <section id="reverse-lookup-section" class="reverse-lookup-section">
+        <h2>やりたいことから探す（逆引き一覧）</h2>
+        <div id="reverse-lookup-list"></div>
+      </section>
+    </main>
+
+    <footer class="footer" id="footer-placeholder"></footer>
+
+    <script defer src="assets/js/main.js"></script>
+    <script defer src="assets/js/search.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((registration) => {
+              console.log(
+                "ServiceWorker registration successful with scope: ",
+                registration.scope
+              );
+            })
+            .catch((err) => {
+              console.log("ServiceWorker registration failed: ", err);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>

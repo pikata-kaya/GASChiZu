@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="../assets/img/icon-512x512.png"
+    />
+    <link rel="manifest" href="../manifest.json" />
+    <title>基本 - GAS地図</title>
+    <link rel="stylesheet" href="../assets/css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Klee+One&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <header class="header" id="header-placeholder"></header>
+    <nav id="nav-placeholder"></nav>
+
+    <main class="main-container">
+      <div class="category-header">
+        <h2>はじめてのGAS</h2>
+        <p>
+          GASを始める上での最初のステップと、スクリプトを書く上での基礎知識を学びます。
+        </p>
+      </div>
+
+      <div class="category-layout">
+        <aside class="tab-menu-container">
+          <ul class="tab-menu"></ul>
+        </aside>
+
+        <div class="content-container"></div>
+      </div>
+    </main>
+
+    <footer class="footer" id="footer-placeholder"></footer>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/category-tabs.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((registration) => {
+              console.log(
+                "ServiceWorker registration successful with scope: ",
+                registration.scope
+              );
+            })
+            .catch((err) => {
+              console.log("ServiceWorker registration failed: ", err);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>
