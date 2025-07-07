@@ -10,6 +10,10 @@ const urlsToCache = [
   "/assets/css/style.css",
   "/assets/js/main.js",
 
+  // UIに必須のアイコン
+  "/assets/img/icon-192x192.png",
+  "/assets/img/icon-512x512.png",
+
   // データ
   "/data/cheatsheet.json",
 
@@ -27,10 +31,6 @@ const urlsToCache = [
   "/category/environment.html",
   "/category/recipes.html",
   "/category/troubleshooting.html",
-
-  // UIに必須のアイコンのみ残す
-  "/assets/img/icon-192x192.png",
-  "/assets/img/icon-512x512.png",
 ];
 
 // PWAのインストール処理（変更なし）
