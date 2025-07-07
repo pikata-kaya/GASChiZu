@@ -1,10 +1,10 @@
 // defer属性で読み込むため、DOMContentLoadedは不要です。
 
 const searchBox = document.getElementById("search-box");
-const tagsContainer = document.getElementById("tags-container");
+const tagsContainer = document.getElementById("tags-list-container");
 const resultsGrid = document.getElementById("results-grid");
 const resultsCount = document.getElementById("results-count");
-const reverseLookupList = document.getElementById("reverse-lookup-list"); // ★追加
+const reverseLookupList = document.getElementById("reverse-lookup-list");
 
 let allCheatsheets = [];
 let activeTags = new Set();
