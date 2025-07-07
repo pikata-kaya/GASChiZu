@@ -8,7 +8,7 @@
     "code": "// 1. Googleスプレッドシートを開きます。\n// 2. 上部メニューの「拡張機能」をクリックします。\n// 3. 「Apps Script」を選択します。\n// これで、そのスプレッドシートに紐付いたスクリプトエディタが開きます。",
     "result": "スクリプトエディタが新しいタブまたはウィンドウで表示されます。",
     "tags": ["コンテナバインド", "スクリプトエディタ", "始め方", "環境構築"],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "beginner-syntax-001",
@@ -19,7 +19,7 @@
     "code": "function myFunction() {\n  // 定数（再代入不可）の宣言\n  const message = 'Hello, World!';\n\n  // 変数（再代入可能）の宣言\n  let count = 10;\n\n  console.log(message);\n  console.log(count);\n}",
     "result": "実行ログに 'Hello, World!' と 10 が表示されます。",
     "tags": ["const", "let", "変数宣言", "文法", "関数定義"],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "beginner-log-001",
@@ -30,7 +30,7 @@
     "code": "function checkLog() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet();\n  const sheetName = sheet.getName();\n\n  // ログに出力したい変数を指定\n  Logger.log(sheetName);\n}",
     "result": "実行後、スクリプトエディタ下部の「実行ログ」に現在開いているスプレッドシート名が表示されます。",
     "tags": ["スプレッドシート操作", "ログ出力"],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "beginner-error-001",
@@ -48,7 +48,7 @@
       "例外処理",
       "安定化"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "spreadsheet-sheet-001",
@@ -66,7 +66,7 @@
       "スプレッドシート操作",
       "取得"
     ],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "spreadsheet-cell-001",
@@ -84,7 +84,7 @@
       "取得",
       "読み取り"
     ],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "spreadsheet-cell-002",
@@ -102,7 +102,7 @@
       "範囲",
       "範囲読み取り"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "spreadsheet-last-row-001",
@@ -120,7 +120,7 @@
       "取得",
       "最終行"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "spreadsheet-row-001",
@@ -138,7 +138,7 @@
       "行",
       "追加"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "workspace-gmail-001",
@@ -149,7 +149,7 @@
     "code": "function sendSimpleEmail() {\n  const recipient = 'user@example.com';\n  const subject = 'GASからのテストメール';\n  const body = 'これはGoogle Apps Scriptから送信されたメールです。';\n  GmailApp.sendEmail(recipient, subject, body);\n}",
     "result": "指定したメールアドレス（recipient）にメールが送信されます。",
     "tags": ["GmailApp", "メール", "メール送信", "自動送信", "送信"],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "workspace-calendar-001",
@@ -167,7 +167,7 @@
       "作成",
       "自動化"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "workspace-drive-001",
@@ -185,7 +185,7 @@
       "作成",
       "自動生成"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "automation-trigger-001",
@@ -196,7 +196,7 @@
     "code": "function setDailyTrigger() {\n  // 既に設定済みのトリガーを削除して重複を防ぐ\n  ScriptApp.getProjectTriggers().forEach(trigger => {\n    if (trigger.getHandlerFunction() === 'dailyTask') {\n      ScriptApp.deleteTrigger(trigger);\n    }\n  });\n\n  // 毎日午前9時〜10時の間に実行するトリガーを設定\n  ScriptApp.newTrigger('dailyTask')\n    .timeBased()\n    .everyDays(1)\n    .atHour(9)\n    .create();\n}\n\nfunction dailyTask() {\n  // ここに毎日実行したい処理を記述\n  console.log('日次タスクを実行しました。');\n}",
     "result": "`setDailyTrigger`を実行するとトリガーが設定されます。その後、毎日午前9時台に`dailyTask`が自動実行されます。",
     "tags": ["ScriptApp", "トリガー", "予約", "定時実行", "時間主導", "自動化"],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "automation-trigger-002",
@@ -207,7 +207,7 @@
     "code": "// この関数は手動でトリガー設定画面から設定する必要があります。\n// 1. スクリプトエディタの「トリガー」アイコンをクリック\n// 2. 「トリガーを追加」ボタンを押す\n// 3. 実行する関数を選択: onFormSubmit\n// 4. イベントのソースを選択: フォームから\n// 5. イベントの種類を選択: フォーム送信時\n// 6. 保存\n\nfunction onFormSubmit(e) {\n  // 回答内容を取得\n  const itemResponses = e.response.getItemResponses();\n  let responseText = '';\n  itemResponses.forEach(itemResponse => {\n    responseText += itemResponse.getItem().getTitle() + ': ' + itemResponse.getResponse() + '\\n';\n  });\n  Logger.log(responseText);\n}",
     "result": "連携しているGoogleフォームが送信されるたびに、その回答内容が実行ログに出力されます。",
     "tags": ["FormApp", "Googleフォーム", "イベント駆動", "トリガー", "自動化"],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "ui-menu-001",
@@ -223,7 +223,7 @@
       "トリガー",
       "画面操作"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "ui-html-001",
@@ -242,7 +242,7 @@
       "画面作成",
       "画面操作"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "external-api-001",
@@ -253,7 +253,7 @@
     "code": "function fetchJsonApi() {\n  // 例として郵便番号検索APIを使用\n  const url = 'https://zipcloud.ibsnet.co.jp/api/search?zipcode=1000001';\n  \n  try {\n    const response = UrlFetchApp.fetch(url);\n    const json = response.getContentText();\n    const data = JSON.parse(json);\n    \n    // 取得したデータから住所を取り出す\n    const address = data.results[0].address1 + data.results[0].address2 + data.results[0].address3;\n    Logger.log(address);\n\n  } catch (e) {\n    Logger.log('APIの取得に失敗しました: ' + e.message);\n  }\n}",
     "result": "実行ログに '東京都千代田区千代田' という住所が表示されます。",
     "tags": ["API", "GET", "HTTPリクエスト", "JSON", "UrlFetchApp", "外部連携"],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "external-property-001",
@@ -271,7 +271,7 @@
       "機密情報",
       "永続化"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "spreadsheet-sheet-002",
@@ -288,7 +288,7 @@
       "別ファイル",
       "取得"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "spreadsheet-cell-003",
@@ -306,7 +306,7 @@
       "書き込み",
       "設定"
     ],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "spreadsheet-cell-004",
@@ -325,7 +325,7 @@
       "設定",
       "高速化"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "spreadsheet-last-col-001",
@@ -343,7 +343,7 @@
       "取得",
       "最終列"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "spreadsheet-sheet-003",
@@ -361,7 +361,7 @@
       "削除",
       "範囲"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "spreadsheet-sheet-004",
@@ -379,7 +379,7 @@
       "スプレッドシート操作",
       "複製"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "workspace-gmail-002",
@@ -398,7 +398,7 @@
       "添付ファイル",
       "送信"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "workspace-calendar-002",
@@ -416,7 +416,7 @@
       "取得",
       "読み取り"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "workspace-drive-002",
@@ -435,7 +435,7 @@
       "作成",
       "検索"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "workspace-docs-001",
@@ -452,7 +452,7 @@
       "テキスト",
       "追加"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "workspace-form-001",
@@ -463,7 +463,7 @@
     "code": "// この関数はフォームのトリガー（フォーム送信時）に設定する必要があります\nfunction onFormSubmit(e) {\n  const itemResponses = e.response.getItemResponses();\n  let mailBody = '新しい回答がありました。\\n\\n';\n  \n  itemResponses.forEach(response => {\n    const question = response.getItem().getTitle();\n    const answer = response.getResponse();\n    mailBody += question + ': ' + answer + '\\n';\n  });\n  \n  Logger.log(mailBody); // 実際はGmailApp.sendEmailなどで通知する\n}",
     "result": "フォームが送信されると、すべての質問と回答が整形されてログに出力されます。メール通知などに活用できます。",
     "tags": ["FormApp", "Googleフォーム", "トリガー", "回答取得", "自動化"],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "workspace-slides-001",
@@ -481,7 +481,7 @@
       "作成",
       "追加"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "automation-trigger-003",
@@ -499,7 +499,7 @@
       "画面操作",
       "自動化"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "automation-trigger-004",
@@ -510,7 +510,7 @@
     "code": "function onEdit(e) {\n  const range = e.range; // 編集されたセル範囲を取得\n  const sheet = range.getSheet();\n  // A列が編集されたら、隣のB列にタイムスタンプを記録\n  if (range.getColumn() == 1) {\n    sheet.getRange(range.getRow(), 2).setValue(new Date());\n  }\n}",
     "result": "スプレッドシートのA列のいずれかのセルを編集すると、同じ行のB列に現在の日時が自動的に入力されます。",
     "tags": ["タイムスタンプ", "トリガー", "単純トリガー", "自動化"],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "automation-trigger-005",
@@ -529,7 +529,7 @@
       "時間主導",
       "自動化"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "automation-auth-001",
@@ -547,7 +547,7 @@
       "実行コンテキスト",
       "権限"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "ui-dialog-001",
@@ -558,7 +558,7 @@
     "code": "function showAlert() {\n  SpreadsheetApp.getUi().alert('処理が完了しました。');\n}",
     "result": "スプレッドシートの中央に「処理が完了しました。」というメッセージとOKボタンが表示されます。",
     "tags": ["alert", "スプレッドシート操作", "ダイアログ", "画面操作", "通知"],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "ui-dialog-002",
@@ -575,7 +575,7 @@
       "ユーザー入力",
       "画面操作"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "ui-menu-002",
@@ -592,7 +592,7 @@
       "スプレッドシート操作",
       "画面操作"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "ui-html-002",
@@ -611,7 +611,7 @@
       "画面作成",
       "画面操作"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "ui-html-003",
@@ -629,7 +629,7 @@
       "画面操作",
       "非同期処理"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "external-api-002",
@@ -647,7 +647,7 @@
       "UrlFetchApp",
       "外部連携"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "external-property-002",
@@ -665,7 +665,7 @@
       "個人設定",
       "永続化"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "external-db-001",
@@ -676,7 +676,7 @@
     "code": "function connectToDatabase() {\n  // 注意: このコードは事前の設定がなければ動作しません\n  const dbUrl = 'jdbc:google:mysql://<GCPプロジェクトID>:<リージョン>:<インスタンス名>/<データベース名>';\n  const user = 'your_username';\n  const userPassword = 'your_password'; // パスワードはスクリプトプロパティ等で安全に管理すること\n\n  try {\n    const conn = Jdbc.getCloudSqlConnection(dbUrl, user, userPassword);\n    Logger.log('データベース接続に成功しました。');\n    conn.close();\n  } catch (e) {\n    Logger.log('データベース接続に失敗しました: ' + e.message);\n  }\n}",
     "result": "設定が正しければ、実行ログに「データベース接続に成功しました。」と表示されます。機密情報の管理には十分な注意が必要です。",
     "tags": ["Cloud SQL", "Jdbc", "MySQL", "SQL", "データベース", "外部連携"],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "beginner-editor-002",
@@ -687,7 +687,7 @@
     "code": "// 1. ブラウザで script.google.com にアクセスします。\n// 2. 左上の「新しいプロジェクト」ボタンをクリックします。",
     "result": "新しいスタンドアロンプロジェクトのスクリプトエディタが開きます。",
     "tags": ["Webアプリ", "スクリプトエディタ", "スタンドアロン", "始め方"],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "beginner-log-002",
@@ -698,7 +698,7 @@
     "code": "function checkConsoleLog() {\n  const data = { name: '大石', age: 24 };\n  console.log('ユーザーデータ:', data);\n}",
     "result": "実行ログに、オブジェクトが展開可能な形式で出力されます。",
     "tags": ["ログ出力"],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "spreadsheet-sheet-005",
@@ -715,7 +715,7 @@
       "別ファイル",
       "取得"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "spreadsheet-sheet-006",
@@ -726,7 +726,7 @@
     "code": "function getAllSheets() {\n  const ss = SpreadsheetApp.getActiveSpreadsheet();\n  const allSheets = ss.getSheets();\n  \n  allSheets.forEach(sheet => {\n    Logger.log(sheet.getName());\n  });\n}",
     "result": "実行ログに、スプレッドシート内のすべてのシート名が順番に出力されます。",
     "tags": ["getSheets", "シート", "スプレッドシート操作", "取得", "繰り返し"],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "spreadsheet-cell-005",
@@ -744,7 +744,7 @@
       "取得",
       "範囲"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "spreadsheet-cell-006",
@@ -763,7 +763,7 @@
       "書式",
       "範囲"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "spreadsheet-sheet-007",
@@ -781,7 +781,7 @@
       "スプレッドシート操作",
       "削除"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "workspace-gmail-003",
@@ -792,7 +792,7 @@
     "code": "function sendAdvancedEmail() {\n  GmailApp.sendEmail('recipient@example.com', '件名', 'このメールはHTML形式です。', {\n    name: 'GASの自動通知',\n    cc: 'cc@example.com',\n    bcc: 'bcc@example.com',\n    replyTo: 'noreply@example.com',\n    htmlBody: '<h1>重要なお知らせ</h1><p>HTMLメールのテストです。<a href=\"https://www.google.com\">リンク</a>も設置できます。</p>'\n  });\n}",
     "result": "指定した内容で、リッチなHTMLメールが送信されます。",
     "tags": ["GmailApp", "HTMLメール", "bcc", "cc", "オプション", "メール送信"],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "workspace-gmail-004",
@@ -803,7 +803,7 @@
     "code": "function createEmailDraft() {\n  GmailApp.createDraft('recipient@example.com', '【下書き】月次報告', '本文は後で編集します。');\n}",
     "result": "Gmailの下書きフォルダに、指定した宛先・件名・本文のメールが作成されます。",
     "tags": ["GmailApp", "createDraft", "メール", "下書き", "作成"],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "workspace-calendar-003",
@@ -820,7 +820,7 @@
       "共有カレンダー",
       "取得"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "workspace-drive-003",
@@ -838,7 +838,7 @@
       "ファイル一覧",
       "繰り返し"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "workspace-drive-004",
@@ -849,7 +849,7 @@
     "code": "function copyFile() {\n  const fileToCopy = DriveApp.getFileById('YOUR_FILE_ID');\n  // 同じフォルダに、新しい名前でコピーを作成\n  fileToCopy.makeCopy('コピー - ' + fileToCopy.getName());\n}",
     "result": "指定したファイルのコピーが、接頭辞「コピー - 」付きの新しいファイル名で作成されます。",
     "tags": ["Googleドライブ", "makeCopy", "コピー", "ファイル", "複製"],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "automation-trigger-006",
@@ -867,7 +867,7 @@
       "初期設定",
       "単純トリガー"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "external-property-003",
@@ -885,7 +885,7 @@
       "プロパティ",
       "永続化"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "workspace-docs-002",
@@ -902,7 +902,7 @@
       "帳票作成",
       "置換"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "workspace-form-002",
@@ -920,7 +920,7 @@
       "データ集計",
       "回答取得"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "workspace-slides-002",
@@ -938,7 +938,7 @@
       "図形",
       "追加"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "beginner-error-002",
@@ -956,7 +956,7 @@
       "エラー通知",
       "例外処理"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "beginner-event-001",
@@ -976,7 +976,7 @@
       "トリガー",
       "監査ログ"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "automation-auth-002",
@@ -987,7 +987,7 @@
     "code": "// これはコードではなく、ユーザー操作のフローです。\n\n// 1. 初回実行時にポップアップが表示される。\n// 2. 「権限を確認」をクリック。\n// 3. Googleアカウントを選択。\n// 4. 「このアプリは Google で確認されていません」という警告が出たら、[詳細] > [（プロジェクト名）（安全でないページ）に移動] をクリック。\n// 5. 表示された権限（スコープ）の内容を確認し、「許可」をクリックする。",
     "result": "一度許可すると、同じスクリプトでは再度承認を求められることはありません。警告画面は、未審査の個人作成スクリプトでは標準的な表示であり、必ずしも危険という意味ではありません。",
     "tags": ["スコープ", "セキュリティ", "初回実行", "承認", "権限"],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "automation-auth-003",
@@ -1005,7 +1005,7 @@
       "最小権限の原則",
       "権限"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "automation-auth-004",
@@ -1023,7 +1023,7 @@
       "実行コンテキスト",
       "権限"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "automation-auth-005",
@@ -1041,7 +1041,7 @@
       "実行コンテキスト",
       "権限"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "beginner-event-002",
@@ -1059,7 +1059,7 @@
       "トリガー",
       "監査ログ"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "spreadsheet-cell-007",
@@ -1079,7 +1079,7 @@
       "画面操作",
       "範囲"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "recipe-marketing-001",
@@ -1097,7 +1097,7 @@
       "営業",
       "自動化"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "recipe-marketing-002",
@@ -1115,7 +1115,7 @@
       "営業",
       "差し込みメール"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "recipe-marketing-003",
@@ -1134,7 +1134,7 @@
       "帳票作成",
       "見積書"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "recipe-marketing-004",
@@ -1154,7 +1154,7 @@
       "外部連携",
       "顧客管理"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "recipe-marketing-005",
@@ -1172,7 +1172,7 @@
       "繰り返し",
       "自動化"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "debug-error-001",
@@ -1189,7 +1189,7 @@
       "トラブルシューティング",
       "ログ出力"
     ],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "debug-error-002",
@@ -1207,7 +1207,7 @@
       "ログ出力",
       "変数宣言"
     ],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "debug-error-003",
@@ -1227,7 +1227,7 @@
       "範囲書き込み",
       "高速化"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "debug-error-004",
@@ -1238,7 +1238,7 @@
     "code": "// 例: 最初はスプレッドシートのみのコードだった\nfunction someFunction() {\n  // ... SpreadsheetAppを使った処理 ...\n\n  // 後からGmailへの通知機能を追加した\n  GmailApp.sendEmail('user@example.com', '件名', '本文'); // ← この行を追加したタイミングで権限が必要になる\n}",
     "result": "解決策は簡単です。スクリプトエディタから**もう一度、手動で関数を実行**してください。新しい権限を要求するポップアップが表示されるので、内容を確認して「許可」をクリックすれば、エラーは解消されます。",
     "tags": ["エラー", "スコープ", "トラブルシューティング", "承認", "権限"],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "debug-error-005",
@@ -1256,7 +1256,7 @@
       "制限",
       "割り当て"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "recipe-daily-001",
@@ -1275,7 +1275,7 @@
       "正規表現",
       "自動化"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "recipe-daily-002",
@@ -1294,7 +1294,7 @@
       "天気予報",
       "日常生活"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "recipe-daily-003",
@@ -1315,7 +1315,7 @@
       "自動化",
       "通知"
     ],
-    "level": "advance"
+    "level": "上級"
   },
   {
     "id": "dev-editor-001",
@@ -1326,7 +1326,7 @@
     "code": "// この項目は、実際の画面のスクリーンショットを掲載することを強く推奨します。\n// スクリーンショットに①〜④の番号を振って各部を指し示すと、非常に分かりやすくなります。",
     "result": "まずは「保存」と「実行」の2つのボタンの役割を覚えれば、基本的な開発を始めることができます。",
     "tags": ["Webエディタ", "ログ出力", "入門", "基本操作", "画面構成"],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "dev-log-001",
@@ -1338,7 +1338,7 @@
     "code": "function checkVariable() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('データ');\n  Logger.log('取得したシート: ' + sheet); // sheetがnullになっていないか確認\n\n  if (sheet) {\n    Logger.log('シートが見つかったので、処理を実行します。');\n    const value = sheet.getRange('A1').getValue();\n    Logger.log('A1セルの値: ' + value);\n  } else {\n    Logger.log('シートが見つからなかったので、処理をスキップします。');\n  }\n}",
     "result": "関数実行後、画面下の「実行ログ」を確認します。`if`文の中と外の両方にログを置くことで、「条件が満たされて処理が実行されたのか、されなかったのか」を正確に把握できます。",
     "tags": ["Logger.log", "トラブルシューティング", "ログ出力"],
-    "level": "basic"
+    "level": "基本"
   },
   {
     "id": "dev-debugger-001",
@@ -1356,7 +1356,7 @@
       "ログ出力",
       "変数宣言"
     ],
-    "level": "application"
+    "level": "応用"
   },
   {
     "id": "dev-editor-002",
@@ -1368,6 +1368,6 @@
     "code": "function testAutocomplete() {\n  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();\n\n  // 下の行で「sheet.」と入力して少し待ってみてください。\n  // 使えるメソッドの一覧が候補として表示されます。\n  sheet.\n}",
     "result": "`sheet.`のように、オブジェクトの後に`.`を入力すると、利用可能なメソッドの候補が一覧で表示されます。矢印キーで選択して`Enter`を押せば、確実に入力できます。メソッドにマウスカーソルを合わせると、簡単な説明（ヒント）も表示されます。",
     "tags": ["IntelliSense", "Webエディタ", "コード補完", "ヒント", "生産性"],
-    "level": "basic"
+    "level": "基本"
   }
 ]
