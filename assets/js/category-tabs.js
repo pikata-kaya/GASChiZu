@@ -112,7 +112,7 @@ function setupAccordionFromGeneratedUI() {
 function createCheatsheetItem(item) {
   console.log("表示しようとしているアイテム:", item);
   const itemElement = document.createElement("div");
-  itemElement.className = "cheatsheet-item";
+  itemElement.className = "cheatsheet-item card";
   itemElement.id = item.id;
   let screenshotHtml = "";
   if (item.screenshot_url) {
@@ -132,7 +132,10 @@ function createCheatsheetItem(item) {
     levelBadgeHtml = `<span class="level-badge ${escapedLevel}">${escapedLevel}</span>`;
   }
   itemElement.innerHTML = `
-        <h3>${escapedTitle} + ${levelBadgeHtml}</h3>
+        <h3>
+            <span class="cheatsheet-title-text">${escapedTitle}</span>
+            ${levelBadgeHtml}
+        </h3>
         <div class="cheatsheet-body">
             ${screenshotHtml}
             <div class="prose">${descriptionHtml}</div>
