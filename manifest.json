@@ -1,12 +1,12 @@
 {
-  "name": "GASチートシート",
-  "short_name": "GASチート",
+  "name": "GAS地図",
+  "short_name": "GASちず",
   "scope": "/",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#fefefe",
   "theme_color": "#4285F4",
-  "description": "Google Apps Scriptの便利なコードスニペットをまとめたチートシートサイト。",
+  "description": "Google Apps Scriptの便利なコードスニペットのチートシートまとめサイト。",
   "icons": [
     {
       "src": "/assets/img/icon-192x192.png",
