@@ -5,12 +5,16 @@
   font-weight: normal;
   font-style: normal;
 }
-/* 基本スタイルと変数定義 */
+
+/* =================================== */
+/* 1. 基本設定と変数定義 */
+/* =================================== */
 :root {
   --primary-color: #4285f4;
   --secondary-color: #e9eef6;
   --background-color: #f8f9fa;
   --text-color: #111111;
+  --text-color-light: #6c757d;
   --card-bg-color: #fefefe;
   --border-color: #dee2e6;
   --header-height: 60px;
@@ -26,9 +30,10 @@ body {
 }
 
 /* =================================== */
-/* 共通コンポーネント: ヘッダーとナビゲーション */
+/* 2. 共通コンポーネント */
 /* =================================== */
 
+/* --- ヘッダーとナビゲーション --- */
 .header {
   background-color: var(--card-bg-color);
   border-bottom: 1px solid var(--border-color);
@@ -39,7 +44,6 @@ body {
   right: 0;
   z-index: 1000;
 }
-
 .header-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -49,22 +53,18 @@ body {
   justify-content: space-between;
   align-items: center;
 }
-
 .site-title {
   font-family: "Cinecaption", sans-serif;
   font-size: 1.5rem;
   margin: 0;
 }
-
 .site-title-link {
   color: var(--primary-color);
   text-decoration: none;
 }
-
 .site-title-link:hover {
   color: var(--secondary-color);
 }
-
 .hamburger-button {
   display: flex;
   flex-direction: column;
@@ -77,7 +77,6 @@ body {
   padding: 0;
   z-index: 1001;
 }
-
 .hamburger-button span {
   width: 30px;
   height: 3px;
@@ -85,7 +84,6 @@ body {
   border-radius: 5px;
   transition: all 0.3s ease-in-out;
 }
-
 .hamburger-button.is-active span:nth-child(1) {
   transform: translateY(8px) rotate(45deg);
 }
@@ -95,7 +93,6 @@ body {
 .hamburger-button.is-active span:nth-child(3) {
   transform: translateY(-8px) rotate(-45deg);
 }
-
 #nav-menu {
   display: none;
   position: fixed;
@@ -108,17 +105,14 @@ body {
   z-index: 999;
   box-sizing: border-box;
 }
-
 #nav-menu.is-active {
   display: block;
 }
-
 .nav-menu ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
-
 .nav-menu li a {
   display: block;
   padding: 10px 0;
@@ -127,44 +121,35 @@ body {
   font-weight: bold;
 }
 
-/* =================================== */
-/* ページ共通のメインレイアウト */
-/* =================================== */
-
+/* --- メインレイアウトとフッター --- */
 .main-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 30px 20px;
 }
-
 .footer {
   text-align: center;
   padding: 20px;
   font-size: 0.9rem;
+  color: var(--text-color-light);
 }
 
-.footer p a {
-  color: #6c757d;
-  text-decoration: none;
-}
-
-.footer p a:hover {
-  text-decoration: underline;
-}
-
-/* =================================== */
-/* トップページ専用スタイル */
-/* =================================== */
-
-.search-section,
-.results-section {
+/* --- 共通カードスタイルを定義 --- */
+.card {
   background-color: var(--card-bg-color);
   border: 1px solid var(--border-color);
   border-radius: 8px;
+}
+
+/* =================================== */
+/* 3. トップページ専用スタイル */
+/* =================================== */
+.search-section,
+.results-section,
+.reverse-lookup-section {
   padding: 20px;
   margin-bottom: 30px;
 }
-
 #search-box {
   width: 100%;
   padding: 12px;
@@ -173,15 +158,33 @@ body {
   border: 1px solid var(--border-color);
   box-sizing: border-box;
 }
-
 .tags-container {
   margin-top: 20px;
 }
-.tags-container p {
-  margin: 0 0 10px;
+.tags-summary {
   font-weight: bold;
+  cursor: pointer;
+  padding: 8px 0;
+  list-style: none; /* markerを消す */
+  user-select: none;
 }
-
+.tags-summary::-webkit-details-marker {
+  display: none;
+}
+.tags-summary::after {
+  content: "+";
+  float: right;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  transition: transform 0.2s;
+}
+details[open] > .tags-summary::after {
+  transform: rotate(45deg);
+}
+.tags-list {
+  margin-top: 10px;
+}
 .tag-button {
   background-color: #e9eef6;
   color: var(--primary-color);
@@ -193,43 +196,33 @@ body {
   font-size: 0.9rem;
   transition: all 0.2s;
 }
-
 .tag-button:hover {
   background-color: #d0d9e8;
 }
-
 .tag-button.active {
   background-color: var(--primary-color);
   color: #fefefe;
   font-weight: bold;
 }
-
 #results-count {
   margin-top: 0;
 }
-
 .results-grid {
   display: grid;
   gap: 20px;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
-
 .result-card {
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
   padding: 15px;
   transition: box-shadow 0.2s;
   text-decoration: none;
   color: var(--text-color);
-  background-color: #fefefe;
   display: flex;
   flex-direction: column;
 }
-
 .result-card:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .card-title {
   font-size: 1.2rem;
   color: var(--primary-color);
@@ -251,13 +244,51 @@ body {
 }
 .card-tags {
   font-size: 0.8rem;
-  color: #6c757d;
+  color: var(--text-color-light);
+}
+.reverse-lookup-button {
+  display: block;
+  background-color: var(--primary-color);
+  color: white;
+  text-align: center;
+  padding: 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-bottom: 20px;
+  transition: opacity 0.2s;
+}
+.reverse-lookup-button:hover {
+  opacity: 0.85;
+}
+#reverse-lookup-list h4 {
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 8px;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+#reverse-lookup-list ul {
+  list-style: none;
+  padding-left: 0;
+}
+#reverse-lookup-list li {
+  margin-bottom: 0.5em;
+}
+#reverse-lookup-list li a {
+  text-decoration: none;
+  color: var(--primary-color);
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 2px;
+  transition: color 0.2s, border-bottom-color 0.2s;
+}
+#reverse-lookup-list li a:hover {
+  color: #2a56c6;
+  border-bottom-color: #2a56c6;
 }
 
 /* =================================== */
-/* カテゴリーページ専用スタイル */
+/* 4. カテゴリーページ専用スタイル */
 /* =================================== */
-
 .category-header {
   margin-bottom: 30px;
   padding-bottom: 15px;
@@ -268,19 +299,18 @@ body {
 }
 .category-header p {
   margin: 5px 0 0;
-  color: #6c757d;
+  color: var(--text-color-light);
 }
-
 .category-layout {
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
 
+/* --- タブ / アコーディオン --- */
 .tab-menu-container {
   width: 100%;
 }
-
 .tab-menu {
   list-style: none;
   padding: 0;
@@ -297,7 +327,6 @@ body {
   background: #ccc;
   border-radius: 2px;
 }
-
 .tab-item {
   padding: 12px 15px;
   cursor: pointer;
@@ -316,159 +345,88 @@ body {
   color: #fefefe;
   font-weight: bold;
 }
-
+.accordion-item {
+  border-bottom: 1px solid var(--border-color);
+}
+.accordion-item:last-child {
+  border-bottom: none;
+}
+.accordion-trigger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  padding: 15px 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--text-color);
+  cursor: pointer;
+  text-align: left;
+  font-family: "Klee One", serif;
+}
+.accordion-trigger::after {
+  content: "+";
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+  transition: transform 0.2s ease;
+}
+.accordion-item.is-open .accordion-trigger::after {
+  transform: rotate(45deg);
+}
 .content-panel {
   display: none;
 }
 .content-panel.active {
   display: block;
 }
+.accordion-content {
+  display: none;
+  padding: 0 10px 20px 10px;
+}
+.accordion-item.is-open .accordion-content {
+  display: block;
+}
 
+/* --- チートシート項目 --- */
 .cheatsheet-item {
-  background-color: var(--card-bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
   margin-bottom: 20px;
   overflow: hidden;
 }
-
+.cheatsheet-item h3 {
+  margin: 0;
+  padding: 15px 20px;
+  font-size: 1.4rem;
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+}
+.cheatsheet-title-text {
+  flex-grow: 1;
+}
+.level-badge {
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 12px;
+  background-color: var(--primary-color);
+  color: var(--card-bg-color);
+  border: 1.5px solid var(--secondary-color);
+  text-transform: capitalize;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
 .cheatsheet-body {
   padding: 20px;
 }
 .cheatsheet-body p {
   margin-top: 0;
 }
-
-.code-snippet {
-  padding: 0px;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
-    monospace;
-  font-size: 0.9rem;
-  overflow-x: auto;
-  white-space: pre;
-  /* 背景色と文字色は、highlight.jsのテーマCSSが担当します */
-}
-
-.hljs-comment {
-  color: #dedede !important; /* 白 */
-  font-style: italic; /* お好みで: コメントを斜体にする */
-}
-
-.result-box {
-  margin-top: 15px;
-  padding: 15px;
-  background-color: #f0f4f8;
-  border-radius: 6px;
-  border: 1px solid #c9d6e4;
-}
-.result-box::before {
-  content: "実行結果・補足";
-  font-weight: bold;
-  display: block;
-  margin-bottom: 8px;
-  color: #495057;
-}
-
-/* =================================== */
-/* Markdown表示用のスタイル (.prose) */
-/* =================================== */
-
-.prose table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1em;
-  margin-bottom: 1em;
-  font-size: 0.9rem;
-}
-
-.prose th,
-.prose td {
-  border: 1px solid var(--border-color);
-  padding: 8px 12px;
-  text-align: left;
-}
-
-.prose th {
-  background-color: #f8f9fa;
-  font-weight: bold;
-}
-
-.prose tr:nth-child(even) {
-  background-color: #f8f9fa;
-}
-
-.prose code {
-  background-color: #e9eef6;
-  color: #c7254e;
-  padding: 2px 4px;
-  border-radius: 3px;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
-    monospace;
-}
-
-.prose pre code {
-  background-color: transparent;
-  color: inherit;
-  padding: 0;
-}
-
-/* =================================== */
-/* 逆引き機能用スタイル */
-/* =================================== */
-
-.reverse-lookup-button {
-  display: block;
-  background-color: var(--primary-color);
-  color: white;
-  text-align: center;
-  padding: 12px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  margin-bottom: 20px;
-  transition: opacity 0.2s;
-}
-.reverse-lookup-button:hover {
-  opacity: 0.85;
-}
-
-.reverse-lookup-section {
-  background-color: var(--card-bg-color);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 20px;
-  margin-top: 30px;
-}
-
-#reverse-lookup-list h4 {
-  border-bottom: 2px solid var(--primary-color);
-  padding-bottom: 8px;
-  margin-top: 2em;
-  margin-bottom: 1em;
-}
-
-#reverse-lookup-list ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-#reverse-lookup-list li {
-  margin-bottom: 0.5em;
-}
-
-#reverse-lookup-list li a {
-  text-decoration: none;
-  color: var(--primary-color);
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 2px;
-  transition: color 0.2s, border-bottom-color 0.2s;
-}
-
-#reverse-lookup-list li a:hover {
-  color: #2a56c6;
-  border-bottom-color: #2a56c6;
-}
-
 .code-header {
   display: flex;
   justify-content: space-between;
@@ -495,182 +453,94 @@ body {
   background-color: var(--primary-color);
   cursor: not-allowed;
 }
+.code-snippet {
+  padding: 0px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
+    monospace;
+  font-size: 0.9rem;
+  overflow-x: auto;
+  white-space: pre;
+}
+.code-snippet code.hljs {
+  border-radius: 8px;
+  padding: 15px !important;
+}
+.hljs-comment {
+  color: #969896 !important; /* 明るいグレー */
+  font-style: italic;
+}
+.result-box {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #f0f4f8;
+  border-radius: 6px;
+  border: 1px solid #c9d6e4;
+}
+.result-box::before {
+  content: "実行結果・補足";
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+  color: #495057;
+}
 
 /* =================================== */
-/* スクリーンショット画像用のスタイル */
+/* 5. Markdown と メディアクエリ */
 /* =================================== */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1em 0;
+  font-size: 0.9rem;
+}
+.prose th,
+.prose td {
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  text-align: left;
+}
+.prose th {
+  background-color: var(--background-color);
+  font-weight: bold;
+}
+.prose tr:nth-child(even) {
+  background-color: var(--background-color);
+}
+.prose code {
+  background-color: #e9eef6;
+  color: #c7254e;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
+    monospace;
+}
+.prose pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+}
 .cheatsheet-screenshot {
   display: block;
-  max-width: 100%; /* 親要素の幅を超えないようにする（スマホ対応）*/
-  height: auto; /* 縦横比を維持する */
-  margin: 1.5em auto; /* 画像の上下に余白を設け、中央揃えにする */
-  border: 1px solid var(--border-color); /* 画像に枠線を付ける */
-  border-radius: 8px; /* 角を少し丸める */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* 僅かに影を付ける */
+  max-width: 100%;
+  height: auto;
+  margin: 1.5em auto;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
-
-/* =================================== */
-/* スマホ用アコーディオンUIのスタイル */
-/* =================================== */
-.accordion-item {
-  border-bottom: 1px solid var(--border-color);
-}
-.accordion-item:last-child {
-  border-bottom: none;
-}
-
-.accordion-trigger {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  background-color: transparent;
-  border: none;
-  padding: 15px 5px;
-  font-size: 1rem;
-  font-weight: bold;
-  color: var(--text-color);
-  cursor: pointer;
-  text-align: left;
-  font-family: "Klee One", serif;
-}
-
-.accordion-trigger::after {
-  content: "+";
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--primary-color);
-  transition: transform 0.2s ease;
-}
-
-.accordion-item.is-open .accordion-trigger::after {
-  transform: rotate(45deg);
-}
-
-.accordion-content {
-  display: none; /* 初期状態は非表示 */
-  padding: 0 10px 20px 10px;
-}
-
-.accordion-item.is-open .accordion-content {
-  display: block; /* is-openクラスが付いたら表示 */
-}
-
-/* 画面幅が768px以下（スマホ）の場合のレイアウト切り替え */
 @media (max-width: 768px) {
-  /* PC用のサイドタブメニューを非表示にする */
   .tab-menu-container {
     display: none;
   }
 }
-
-/* =================================== */
-/* highlight.jsの表示を最終調整 */
-/* =================================== */
-
-/* 背景色を持つcode要素自体に角丸とパディングを適用する */
-.code-snippet code.hljs {
-  border-radius: 8px;
-  padding: 15px !important; /* テーマのpaddingを上書き */
-}
-
-/* =================================== */
-/* レベル表示用バッジのスタイル */
-/* =================================== */
-
-.level-badge {
-  font-size: 0.8rem;
-  font-weight: bold;
-  padding: 3px 10px;
-  border-radius: 12px;
-  background-color: var(--primary-color);
-  color: var(--card-bg-color); /* 可読性を考慮して白系に戻しました */
-  border: 1.5px solid var(--secondary-color);
-  text-transform: capitalize;
-  flex-shrink: 0; /* タグが縮まないようにする */
-  margin-top: 2px; /* 微調整 */
-}
-
-/* h3要素を相対配置の基準にする */
-.cheatsheet-item h3 {
-  position: relative;
-}
-
-/* h3要素を相対配置の基準にする */
-.cheatsheet-item h3 {
-  position: relative;
-}
-
-/* =================================== */
-/* タグ絞り込みアコーディオン用スタイル */
-/* =================================== */
-.tags-summary {
-  font-weight: bold;
-  cursor: pointer;
-  padding: 8px 0;
-  margin-top: 20px;
-  user-select: none; /* テキスト選択を無効化 */
-}
-
-/* ブラウザ標準の▼マークを消す */
-.tags-summary::-webkit-details-marker {
-  display: none;
-}
-.tags-summary {
-  list-style: none;
-}
-
-/* 独自の開閉アイコンを追加 */
-.tags-summary::after {
-  content: "+";
-  float: right;
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--primary-color);
-  transition: transform 0.2s;
-}
-
-details[open] > .tags-summary::after {
-  transform: rotate(45deg);
-}
-
-.tags-list {
-  margin-top: 10px;
-}
-
-/* 画面幅が500px以下の時のタイトルとレベルタグのレイアウト */
 @media (max-width: 500px) {
   .cheatsheet-item h3 {
-    flex-direction: column; /* 要素を縦積みに変更 */
-    align-items: flex-start; /* 左揃えに */
-    gap: 5px; /* 隙間を狭くする */
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
   }
-
   .level-badge {
     margin-top: 0;
     align-self: flex-end;
   }
-}
-
-/* =================================== */
-/* チートシートカードのタイトル回り調整 */
-/* =================================== */
-
-/* タイトルテキストが幅に合わせて伸縮するようにする */
-.cheatsheet-title-text {
-  flex-grow: 1;
-}
-
-/* h3要素をFlexboxコンテナとして定義 */
-.cheatsheet-item h3 {
-  position: relative;
-  margin: 0;
-  padding: 15px 20px;
-  font-size: 1.4rem;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid var(--border-color);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 10px;
 }

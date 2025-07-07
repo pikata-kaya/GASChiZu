@@ -112,7 +112,7 @@ function setupAccordionFromGeneratedUI() {
 function createCheatsheetItem(item) {
   console.log("表示しようとしているアイテム:", item);
   const itemElement = document.createElement("div");
-  itemElement.className = "cheatsheet-item";
+  itemElement.className = "cheatsheet-item card";
   itemElement.id = item.id;
   let screenshotHtml = "";
   if (item.screenshot_url) {
