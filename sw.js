@@ -1,7 +1,7 @@
 // キャッシュの名前とバージョン
-const CACHE_NAME = "gas-cheatsheet-v2.0";
+const CACHE_NAME = "gas-cheatsheet-v1.0";
 
-// キャッシュするファイルのリスト
+// ここには、サイトの骨格となるApp Shellだけを残します。
 const urlsToCache = [
   // 共通ファイル
   "/",
@@ -9,39 +9,41 @@ const urlsToCache = [
   "/manifest.json",
   "/assets/css/style.css",
   "/assets/js/main.js",
-  "/assets/img/icon-192x192.png",
-  "/assets/img/icon-512x512.png",
 
   // データ
   "/data/cheatsheet.json",
 
-  // トップページ用JS
+  // JSファイル
   "/assets/js/search.js",
-
-  // カテゴリーページ用JS
   "/assets/js/category-tabs.js",
 
   // 各カテゴリーページHTML
-  "/category/basics.html",
+  "/category/beginner.html",
   "/category/spreadsheet.html",
   "/category/workspace.html",
   "/category/automation.html",
   "/category/ui.html",
   "/category/integration.html",
   "/category/environment.html",
+  "/category/recipes.html",
+  "/category/troubleshooting.html",
+
+  // UIに必須のアイコンのみ残す
+  "/assets/img/icon-192x192.png",
+  "/assets/img/icon-512x512.png",
 ];
 
-// PWAのインストール時に実行されるイベント
+// PWAのインストール処理（変更なし）
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log("Opened cache and added all files");
+      console.log("Opened cache");
       return cache.addAll(urlsToCache);
     })
   );
 });
 
-// 新しいService Workerが有効になった時に、古いキャッシュを削除する処理を追加
+// 古いキャッシュの削除処理（変更なし）
 self.addEventListener("activate", (event) => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(
@@ -57,19 +59,35 @@ self.addEventListener("activate", (event) => {
   );
 });
 
-// サイトへのリクエストがあった場合に実行されるイベント
+// fetchイベントの処理を「動的キャッシュ」戦略に変更
 self.addEventListener("fetch", (event) => {
-  // 注意: 外部ライブラリ(CDN)はキャッシュ対象外
-  if (event.request.url.startsWith("http")) {
-    event.respondWith(
-      caches.match(event.request).then((response) => {
-        // キャッシュに一致するファイルがあれば、それを返す
-        if (response) {
-          return response;
+  event.respondWith(
+    caches.match(event.request).then((cachedResponse) => {
+      // 1. キャッシュにリソースがあれば、それを返す
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+
+      // 2. キャッシュになければ、ネットワークから取得しにいく
+      return fetch(event.request.clone()).then((networkResponse) => {
+        // 取得に失敗したか、外部リソースの場合はそのまま返す
+        if (
+          !networkResponse ||
+          networkResponse.status !== 200 ||
+          networkResponse.type !== "basic"
+        ) {
+          return networkResponse;
         }
-        // キャッシュになければ、ネットワークから取得しにいく
-        return fetch(event.request);
-      })
-    );
-  }
+
+        // 3. 取得に成功したら、キャッシュに保存してからブラウザに返す
+        // (ユーザーが見た画像などが、このタイミングでキャッシュされる)
+        const responseToCache = networkResponse.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseToCache);
+        });
+
+        return networkResponse;
+      });
+    })
+  );
 });
