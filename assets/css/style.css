@@ -331,13 +331,7 @@ body {
   margin-bottom: 20px;
   overflow: hidden;
 }
-.cheatsheet-item h3 {
-  margin: 0;
-  padding: 15px 20px;
-  font-size: 1.4rem;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid var(--border-color);
-}
+
 .cheatsheet-body {
   padding: 20px;
 }
@@ -589,13 +583,12 @@ body {
   font-weight: bold;
   padding: 3px 10px;
   border-radius: 12px;
-  background-color: var(--secondary-color);
-  color: var(--primary-color);
-  border: 1.5px solid var(--card-bg-color);
-  position: absolute;
-  top: 15px;
-  right: 20px;
+  background-color: var(--primary-color);
+  color: var(--card-bg-color); /* 可読性を考慮して白系に戻しました */
+  border: 1.5px solid var(--secondary-color);
   text-transform: capitalize;
+  flex-shrink: 0; /* タグが縮まないようにする */
+  margin-top: 2px; /* 微調整 */
 }
 
 /* h3要素を相対配置の基準にする */
@@ -643,4 +636,41 @@ details[open] > .tags-summary::after {
 
 .tags-list {
   margin-top: 10px;
+}
+
+/* 画面幅が500px以下の時のタイトルとレベルタグのレイアウト */
+@media (max-width: 500px) {
+  .cheatsheet-item h3 {
+    flex-direction: column; /* 要素を縦積みに変更 */
+    align-items: flex-start; /* 左揃えに */
+    gap: 5px; /* 隙間を狭くする */
+  }
+
+  .level-badge {
+    margin-top: 0;
+    align-self: flex-end;
+  }
+}
+
+/* =================================== */
+/* チートシートカードのタイトル回り調整 */
+/* =================================== */
+
+/* タイトルテキストが幅に合わせて伸縮するようにする */
+.cheatsheet-title-text {
+  flex-grow: 1;
+}
+
+/* h3要素をFlexboxコンテナとして定義 */
+.cheatsheet-item h3 {
+  position: relative;
+  margin: 0;
+  padding: 15px 20px;
+  font-size: 1.4rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
 }

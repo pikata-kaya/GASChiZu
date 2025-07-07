@@ -132,7 +132,10 @@ function createCheatsheetItem(item) {
     levelBadgeHtml = `<span class="level-badge ${escapedLevel}">${escapedLevel}</span>`;
   }
   itemElement.innerHTML = `
-        <h3>${escapedTitle} ${levelBadgeHtml}</h3>
+        <h3>
+            <span class="cheatsheet-title-text">${escapedTitle}</span>
+            ${levelBadgeHtml}
+        </h3>
         <div class="cheatsheet-body">
             ${screenshotHtml}
             <div class="prose">${descriptionHtml}</div>
